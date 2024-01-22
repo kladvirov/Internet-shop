@@ -10,6 +10,7 @@ import java.util.List;
 
 public class RoleRepository {
     private final ConnectionProvider connectionProvider;
+
     private static final String FIND_ALL_QUERY = "SELECT * FROM roles";
     private static final String FIND_BY_ID_QUERY = "SELECT * FROM roles WHERE id = ?";
     private static final String DELETE_BY_ID_QUERY = "DELETE FROM roles WHERE id = ?";
@@ -64,7 +65,6 @@ public class RoleRepository {
     public Role insert(Role role) {
         try (Connection connection = connectionProvider.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY, Statement.RETURN_GENERATED_KEYS)) {
-//            preparedStatement.setLong(1, role.getId());
             preparedStatement.setString(1, role.getName());
             int value = preparedStatement.executeUpdate();
 

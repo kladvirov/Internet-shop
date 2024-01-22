@@ -13,14 +13,13 @@ import org.example.util.ConnectionProvider;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.LocalDate;
-import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
 
         User user = new User(null, "Andron", "SIgMONS", LocalDate.of(2004, 8, 6), "123", "56789", true);
         Role role = new Role(null, "sasamba");
-        Order order = new Order(null,4L, new Timestamp(43274747),"ordered");
+        Order order = new Order(null, 4L, new Timestamp(43274747), "ordered");
         Good good = new Good(1L, "something", "any", new BigDecimal(25), LocalDate.of(2004, 8, 6), LocalDate.of(2010, 8, 6), true);
 
         ConnectionProvider connectionProvider = new ConnectionProvider();

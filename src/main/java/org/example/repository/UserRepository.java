@@ -1,8 +1,8 @@
 package org.example.repository;
 
-import org.example.util.ConnectionProvider;
 import org.example.exception.ConnectionException;
 import org.example.model.User;
+import org.example.util.ConnectionProvider;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -11,6 +11,7 @@ import java.util.List;
 
 public class UserRepository {
     private final ConnectionProvider connectionProvider;
+
     private static final String FIND_ALL_QUERY = "SELECT * FROM users";
     private static final String FIND_BY_ID_QUERY = "SELECT * FROM users WHERE id = ?";
     private static final String DELETE_BY_ID_QUERY = "DELETE FROM users WHERE id = ?";
@@ -68,7 +69,6 @@ public class UserRepository {
     public User insert(User user) {
         try (Connection connection = connectionProvider.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY, Statement.RETURN_GENERATED_KEYS)) {
-//            preparedStatement.setLong(1, user.getId());
             preparedStatement.setString(1, user.getName());
             preparedStatement.setString(2, user.getSurname());
             preparedStatement.setDate(3, Date.valueOf(user.getBirthDate()));

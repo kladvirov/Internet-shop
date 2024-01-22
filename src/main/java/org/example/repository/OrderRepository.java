@@ -10,6 +10,7 @@ import java.util.List;
 
 public class OrderRepository {
     private final ConnectionProvider connectionProvider;
+
     private static final String FIND_ALL_QUERY = "SELECT * FROM orders";
     private static final String FIND_BY_ID_QUERY = "SELECT * FROM orders WHERE id = ?";
     private static final String DELETE_BY_ID_QUERY = "DELETE FROM orders WHERE id = ?";
@@ -66,7 +67,6 @@ public class OrderRepository {
     public Order insert(Order order) {
         try (Connection connection = connectionProvider.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY, Statement.RETURN_GENERATED_KEYS)) {
-//            preparedStatement.setLong(1, order.getId());
             preparedStatement.setLong(1, order.getUserId());
             preparedStatement.setTimestamp(2, order.getOrderDate());
             preparedStatement.setString(3, order.getStatus());

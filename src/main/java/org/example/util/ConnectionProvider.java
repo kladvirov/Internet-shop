@@ -3,7 +3,9 @@ package org.example.util;
 import org.example.exception.ConnectionException;
 import org.example.exception.DriverException;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 public class ConnectionProvider {
     public static final String url = "jdbc:postgresql://localhost:5432/postgres";

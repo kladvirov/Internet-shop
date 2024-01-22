@@ -2,7 +2,6 @@ package org.example.repository;
 
 import org.example.exception.ConnectionException;
 import org.example.model.Good;
-import org.example.model.Order;
 import org.example.util.ConnectionProvider;
 
 import java.sql.*;
@@ -10,11 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GoodRepository {
-    private ConnectionProvider connectionProvider;
-
-    public GoodRepository(ConnectionProvider connectionProvider) {
-        this.connectionProvider = connectionProvider;
-    }
+    private final ConnectionProvider connectionProvider;
 
     private static final String FIND_ALL_QUERY = "SELECT * FROM goods";
     private static final String FIND_BY_ID_QUERY = "SELECT FROM goods WHERE id = ?";
@@ -24,6 +19,10 @@ public class GoodRepository {
             + "VALUES( ?, ?, ?, ?, ?, ?)";
     private static final String UPDATE_BY_ID_QUERY = "UPDATE goods SET name = ?, surname = ?, price = ?, create_date = ?, expiration_date = ?,"
             + " is_available = ? WHERE id = ?";
+
+    public GoodRepository(ConnectionProvider connectionProvider) {
+        this.connectionProvider = connectionProvider;
+    }
 
     public Good findById(Long id) {
 
@@ -70,7 +69,6 @@ public class GoodRepository {
     public Good insert(Good good) {
         try (Connection connection = connectionProvider.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(INSERT_QUERY, Statement.RETURN_GENERATED_KEYS)) {
-//            preparedStatement.setLong(1, good.getId());
             preparedStatement.setString(1, good.getName());
             preparedStatement.setString(2, good.getSurname());
             preparedStatement.setBigDecimal(3, good.getPrice());
