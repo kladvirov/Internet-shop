@@ -19,7 +19,7 @@ public class Main {
         UserService userService = new UserService();
         Order order = new Order(new Timestamp(3432423), "ordered");
         Role role1 = new Role("alo");
-        Role role2 = new Role("javaIsBullshit");
+        Role role2 = new Role("java");
         Set<Role> roles = new HashSet<>();
         RoleService roleService = new RoleService();
         User user1 = new User("Testin", "HibernateRoles228", LocalDate.of(2004, 8, 6), "123", "56789", false);
