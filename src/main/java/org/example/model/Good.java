@@ -1,19 +1,36 @@
 package org.example.model;
 
+import jakarta.persistence.*;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
+@Entity
+@Table(name = "goods")
 public class Good {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String surname;
     private BigDecimal price;
+    @Column(name = "create_date")
     private LocalDate createDate;
+    @Column(name = "expiration_date")
     private LocalDate expirationDate;
+    @Column(name = "is_available")
     private Boolean isAvailable;
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "orders_goods_link",
+            joinColumns = {@JoinColumn(name = "good_id")},
+            inverseJoinColumns = {@JoinColumn(name = "order_id")}
+    )
+    private Set <Order> orders = new HashSet<>();
 
-    public Good(Long id, String name, String surname, BigDecimal price, LocalDate createDate, LocalDate expirationDate, Boolean isAvailable) {
-        this.id = id;
+    public Good(String name, String surname, BigDecimal price, LocalDate createDate, LocalDate expirationDate, Boolean isAvailable) {
         this.name = name;
         this.surname = surname;
         this.price = price;
@@ -79,6 +96,14 @@ public class Good {
 
     public void setAvailable(Boolean available) {
         isAvailable = available;
+    }
+
+    public Set<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(Set<Order> orders) {
+        this.orders = orders;
     }
 
     @Override

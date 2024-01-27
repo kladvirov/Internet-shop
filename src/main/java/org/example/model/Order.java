@@ -1,16 +1,32 @@
 package org.example.model;
 
-import java.sql.Timestamp;
+import jakarta.persistence.*;
 
+import java.sql.Timestamp;
+import java.util.HashSet;
+import java.util.Set;
+
+@Entity
+@Table(name = "orders")
 public class Order {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name = "order_date")
     private Timestamp orderDate;
     private String status;
-    private Long userId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "orders_goods_link",
+            joinColumns = {@JoinColumn(name = "order_id")},
+            inverseJoinColumns = {@JoinColumn(name = "good_id")}
+    )
+    private Set<Good> goods = new HashSet<>();
 
-    public Order(Long id, Long userId, Timestamp orderDate, String status) {
-        this.id = id;
-        this.userId = userId;
+    public Order(Timestamp orderDate, String status) {
         this.orderDate = orderDate;
         this.status = status;
     }
@@ -24,14 +40,6 @@ public class Order {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
     }
 
     public Timestamp getOrderDate() {
@@ -50,11 +58,26 @@ public class Order {
         this.status = status;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Set<Good> getGoods() {
+        return goods;
+    }
+
+    public void setGoods(Set<Good> goods) {
+        this.goods = goods;
+    }
+
     @Override
     public String toString() {
         return "Order{" +
                 "id=" + id +
-                ", userId=" + userId +
                 ", orderDate=" + orderDate +
                 ", status='" + status + '\'' +
                 '}';

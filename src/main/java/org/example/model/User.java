@@ -1,29 +1,57 @@
 package org.example.model;
 
-import java.time.LocalDate;
+import jakarta.persistence.*;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
+@Entity
+@Table(name = "users")
 public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String surname;
+    @Column(name = "birth_date")
     private LocalDate birthDate;
     private String login;
     private String password;
+    @Column(name = "is_blocked")
     private Boolean isBlocked;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Order> orders;
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "users_roles_link",
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = {@JoinColumn(name = "role_id")}
+    )
+    private Set<Role> roles = new HashSet<>();
 
-    public User(Long id, String name, String surname, LocalDate birthDate, String login, String password, Boolean isBlocked) {
-        this.id = id;
+    public User (String name, String surname, LocalDate birthDate, String login, String password, Boolean isBlocked) {
         this.name = name;
         this.surname = surname;
         this.birthDate = birthDate;
         this.login = login;
         this.password = password;
         this.isBlocked = isBlocked;
+        this.orders = new ArrayList<>();
     }
 
     public User() {
     }
 
+    public void addOrder(Order order) {
+        order.setUser(this);
+        orders.add(order);
+    }
+    public void removeOrder(Order order) {
+        orders.remove(order);
+    }
     public Long getId() {
         return id;
     }
@@ -80,6 +108,21 @@ public class User {
         this.isBlocked = blocked;
     }
 
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
+    }
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
+    }
     @Override
     public String toString() {
         return "User{" +
