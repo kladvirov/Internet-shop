@@ -1,33 +1,36 @@
 package org.example;
 
-import org.example.model.Good;
 import org.example.model.Order;
 import org.example.model.Role;
 import org.example.model.User;
-import org.example.repository.GoodRepository;
-import org.example.repository.OrderRepository;
-import org.example.repository.RoleRepository;
-import org.example.repository.UserRepository;
-import org.example.util.ConnectionProvider;
+import org.example.service.RoleService;
+import org.example.service.UserService;
 
-import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
+
 
 public class Main {
     public static void main(String[] args) {
 
-        User user = new User(null, "Andron", "SIgMONS", LocalDate.of(2004, 8, 6), "123", "56789", true);
-        Role role = new Role(null, "sasamba");
-        Order order = new Order(null, 4L, new Timestamp(43274747), "ordered");
-        Good good = new Good(1L, "something", "any", new BigDecimal(25), LocalDate.of(2004, 8, 6), LocalDate.of(2010, 8, 6), true);
 
-        ConnectionProvider connectionProvider = new ConnectionProvider();
-        UserRepository userRepository = new UserRepository(connectionProvider);
-        RoleRepository roleRepository = new RoleRepository(connectionProvider);
-        OrderRepository orderRepository = new OrderRepository(connectionProvider);
-        GoodRepository goodRepository = new GoodRepository(connectionProvider);
+        UserService userService = new UserService();
+        Order order = new Order(new Timestamp(3432423), "ordered");
+        Role role1 = new Role("alo");
+        Role role2 = new Role("javaIsBullshit");
+        Set<Role> roles = new HashSet<>();
+        RoleService roleService = new RoleService();
+        User user1 = new User("Testin", "HibernateRoles228", LocalDate.of(2004, 8, 6), "123", "56789", false);
+        User user2 = new User("Hiber", "Testin", LocalDate.of(2004, 8, 6), "123", "56789", false);
 
-        userRepository.insert(user);
+        Set<User> users = new HashSet<>();
+
+        users.add(user1);
+        users.add(user2);
+
+        role1.setUsers(users);
+        roleService.saveRole(role1);
     }
 }
