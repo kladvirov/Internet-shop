@@ -1,33 +1,35 @@
 package org.example.service;
 
 import org.example.model.User;
-import org.example.repository.hibernate.UserDaoImpl;
+import org.example.repository.hibernate.UserRepositoryImpl;
 
 import java.util.List;
 
 public class UserService {
-    private UserDaoImpl usersDao = new UserDaoImpl();
+    private final UserRepositoryImpl userRepository;
 
-    public UserService() {
+    public UserService(UserRepositoryImpl userRepository){
+        this.userRepository = userRepository;
     }
+
     public User findUser(Long id) {
-        return usersDao.findById(id);
+        return userRepository.findById(id);
     }
 
     public List<User> findAllUsers() {
-        return usersDao.findAll();
+        return userRepository.findAll();
     }
 
     public void saveUser(User user) {
-        usersDao.save(user);
+        userRepository.save(user);
     }
 
     public void updateUser(User user) {
-        usersDao.update(user);
+        userRepository.update(user);
     }
 
     public void deleteUser(Long id) {
-        usersDao.delete(id);
+        userRepository.delete(id);
     }
 
 }
