@@ -4,7 +4,7 @@ import org.example.model.Good;
 
 import java.util.List;
 
-public interface GoodDao {
+public interface GoodRepository {
     public Good findById(Long id);
     public List<Good> findAll();
     public void save(Good good);

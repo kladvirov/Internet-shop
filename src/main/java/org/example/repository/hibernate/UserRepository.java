@@ -4,7 +4,7 @@ import org.example.model.User;
 
 import java.util.List;
 
-public interface UserDao {
+public interface UserRepository {
     public User findById(Long id);
     public List<User> findAll();
     public void update(User user);

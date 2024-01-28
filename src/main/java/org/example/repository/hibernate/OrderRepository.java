@@ -4,7 +4,7 @@ import org.example.model.Order;
 
 import java.util.List;
 
-public interface OrderDao {
+public interface OrderRepository {
     public Order findById(Long id);
     public List<Order> findAll();
     public void save(Order order);
