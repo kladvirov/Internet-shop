@@ -11,7 +11,7 @@ import org.hibernate.cfg.Configuration;
 public class HibernateSessionFactory {
     private static SessionFactory sessionFactory;
 
-    private HibernateSessionFactory(){}
+    public HibernateSessionFactory(){}
 
     public static SessionFactory getSessionFactory() {
         if (sessionFactory == null) {
