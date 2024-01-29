@@ -21,7 +21,7 @@ public class Main {
         UserRepositoryImpl userRepository = new UserRepositoryImpl(sessionFactory);
         UserService userService = new UserService(userRepository);
 
-        Order order = new Order(new Timestamp(3432423), "ordered");
+        Order order = new Order(new Timestamp(3432423).toLocalDateTime(), "ordered");
         Role role1 = new Role("alo");
         Role role2 = new Role("java");
         Set<Role> roles = new HashSet<>();
