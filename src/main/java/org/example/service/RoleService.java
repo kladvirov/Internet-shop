@@ -1,14 +1,14 @@
 package org.example.service;
 
 import org.example.model.Role;
-import org.example.repository.hibernate.RoleRepositoryImpl;
+import org.example.repository.RoleRepository;
 
 import java.util.List;
 
 public class RoleService {
-    private final RoleRepositoryImpl roleRepository;
+    private final RoleRepository roleRepository;
 
-    public RoleService(RoleRepositoryImpl roleRepository) {
+    public RoleService(RoleRepository roleRepository) {
         this.roleRepository = roleRepository;
     }
     public Role findRole(Long id) {

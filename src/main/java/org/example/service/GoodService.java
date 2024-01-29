@@ -1,14 +1,14 @@
 package org.example.service;
 
 import org.example.model.Good;
-import org.example.repository.hibernate.GoodRepositoryImpl;
+import org.example.repository.GoodRepository;
 
 import java.util.List;
 
 public class GoodService {
-    private final GoodRepositoryImpl goodRepository;
+    private final GoodRepository goodRepository;
 
-    public GoodService(GoodRepositoryImpl goodRepository) {
+    public GoodService(GoodRepository goodRepository) {
         this.goodRepository = goodRepository;
     }
 

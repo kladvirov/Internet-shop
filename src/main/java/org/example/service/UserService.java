@@ -1,14 +1,14 @@
 package org.example.service;
 
 import org.example.model.User;
-import org.example.repository.hibernate.UserRepositoryImpl;
+import org.example.repository.UserRepository;
 
 import java.util.List;
 
 public class UserService {
-    private final UserRepositoryImpl userRepository;
+    private final UserRepository userRepository;
 
-    public UserService(UserRepositoryImpl userRepository){
+    public UserService(UserRepository userRepository){
         this.userRepository = userRepository;
     }
 

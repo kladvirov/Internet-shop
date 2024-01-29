@@ -1,14 +1,14 @@
 package org.example.service;
 
 import org.example.model.Order;
-import org.example.repository.hibernate.OrderRepositoryImpl;
+import org.example.repository.OrderRepository;
 
 import java.util.List;
 
 public class OrderService {
-    private final OrderRepositoryImpl orderRepository;
+    private final OrderRepository orderRepository;
 
-    public OrderService(OrderRepositoryImpl orderRepository) {
+    public OrderService(OrderRepository orderRepository) {
         this.orderRepository = orderRepository;
     }
 
