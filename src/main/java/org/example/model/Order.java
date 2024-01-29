@@ -2,7 +2,7 @@ package org.example.model;
 
 import jakarta.persistence.*;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,7 +13,7 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "order_date")
-    private Timestamp orderDate;
+    private LocalDateTime orderDate;
     private String status;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -26,7 +26,7 @@ public class Order {
     )
     private Set<Good> goods = new HashSet<>();
 
-    public Order(Timestamp orderDate, String status) {
+    public Order(LocalDateTime orderDate, String status) {
         this.orderDate = orderDate;
         this.status = status;
     }
@@ -42,11 +42,11 @@ public class Order {
         this.id = id;
     }
 
-    public Timestamp getOrderDate() {
+    public LocalDateTime getOrderDate() {
         return orderDate;
     }
 
-    public void setOrderDate(Timestamp orderDate) {
+    public void setOrderDate(LocalDateTime orderDate) {
         this.orderDate = orderDate;
     }
 
