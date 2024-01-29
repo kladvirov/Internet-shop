@@ -1,6 +1,7 @@
 package org.example.repository.hibernate;
 
 import org.example.model.Good;
+import org.example.repository.GoodRepository;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -28,14 +29,14 @@ public class GoodRepositoryImpl implements GoodRepository {
     @Override
     public List<Good> findAll() {
         try (Session session = sessionFactory.openSession()) {
-            return (List<Good>) session.createQuery("From Good", Good.class).list();
+            return session.createQuery("From Good", Good.class).list();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    public void save(Good good) {
+    public Good save(Good good) {
         try (Session session = sessionFactory.openSession()) {
             Transaction transaction = session.beginTransaction();
             session.save(good);
@@ -43,6 +44,7 @@ public class GoodRepositoryImpl implements GoodRepository {
         } catch (HibernateException e) {
             throw new RuntimeException(e);
         }
+        return good;
     }
 
     @Override

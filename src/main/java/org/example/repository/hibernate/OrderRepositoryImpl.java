@@ -1,6 +1,7 @@
 package org.example.repository.hibernate;
 
 import org.example.model.Order;
+import org.example.repository.OrderRepository;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -28,14 +29,14 @@ public class OrderRepositoryImpl implements OrderRepository {
     @Override
     public List<Order> findAll() {
         try (Session session = sessionFactory.openSession()) {
-            return (List<Order>) session.createQuery("From Order", Order.class).list();
+            return session.createQuery("From Order", Order.class).list();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    public void save(Order order) {
+    public Order save(Order order) {
         try (Session session = sessionFactory.openSession()) {
             Transaction transaction = session.beginTransaction();
             session.save(order);
@@ -43,6 +44,7 @@ public class OrderRepositoryImpl implements OrderRepository {
         } catch (HibernateException e) {
             throw new RuntimeException(e);
         }
+        return order;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package org.example.repository.hibernate;
 
 import org.example.model.User;
+import org.example.repository.UserRepository;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -28,14 +29,14 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public List<User> findAll() {
         try (Session session = sessionFactory.openSession()) {
-            return (List<User>) session.createQuery("From User", User.class).list();
+            return session.createQuery("From User", User.class).list();
         } catch (HibernateException e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    public void save(User user) {
+    public User save(User user) {
         try (Session session = sessionFactory.openSession()) {
             Transaction transaction = session.beginTransaction();
             session.save(user);
@@ -43,6 +44,7 @@ public class UserRepositoryImpl implements UserRepository {
         } catch (HibernateException e) {
             throw new RuntimeException(e);
         }
+        return user;
     }
 
     @Override

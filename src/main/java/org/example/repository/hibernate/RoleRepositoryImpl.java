@@ -1,6 +1,7 @@
 package org.example.repository.hibernate;
 
 import org.example.model.Role;
+import org.example.repository.RoleRepository;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -28,14 +29,14 @@ public class RoleRepositoryImpl implements RoleRepository {
     @Override
     public List<Role> findAll() {
         try (Session session = sessionFactory.openSession()) {
-            return (List<Role>) session.createQuery("From Role", Role.class).list();
+            return session.createQuery("From Role", Role.class).list();
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    public void save(Role role) {
+    public Role save(Role role) {
         try (Session session = sessionFactory.openSession()) {
             Transaction transaction = session.beginTransaction();
             session.save(role);
@@ -43,6 +44,7 @@ public class RoleRepositoryImpl implements RoleRepository {
         } catch (HibernateException e) {
             throw new RuntimeException(e);
         }
+        return role;
     }
 
     @Override
