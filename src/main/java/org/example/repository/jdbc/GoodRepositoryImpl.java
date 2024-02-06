@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GoodRepositoryImpl implements GoodRepository {
+
     private final ConnectionProvider connectionProvider;
 
     private static final String FIND_ALL_QUERY = "SELECT * FROM goods";

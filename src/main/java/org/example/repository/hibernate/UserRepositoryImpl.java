@@ -1,5 +1,6 @@
 package org.example.repository.hibernate;
 
+import org.example.exception.RepositoryException;
 import org.example.model.User;
 import org.example.repository.UserRepository;
 import org.hibernate.HibernateException;
@@ -22,7 +23,7 @@ public class UserRepositoryImpl implements UserRepository {
         try(Session session = sessionFactory.openSession()) {
             return session.get(User.class, id);
         } catch (HibernateException e) {
-            throw new RuntimeException(e);
+            throw new RepositoryException("There was an exception during finding User by id");
         }
     }
 
@@ -31,42 +32,51 @@ public class UserRepositoryImpl implements UserRepository {
         try (Session session = sessionFactory.openSession()) {
             return session.createQuery("From User", User.class).list();
         } catch (HibernateException e) {
-            throw new RuntimeException(e);
+            throw new RepositoryException("There was an exception during finding all Users");
         }
     }
 
     @Override
     public User save(User user) {
         try (Session session = sessionFactory.openSession()) {
-            Transaction transaction = session.beginTransaction();
-            session.save(user);
-            transaction.commit();
-        } catch (HibernateException e) {
-            throw new RuntimeException(e);
+            try {
+                Transaction transaction = session.beginTransaction();
+                session.save(user);
+                transaction.commit();
+            } catch (HibernateException e) {
+                session.getTransaction().rollback();
+                throw new RepositoryException("There was an exception during saving User");
+            }
+            return user;
         }
-        return user;
     }
 
     @Override
     public void update(User user) {
         try (Session session = sessionFactory.openSession()) {
-            Transaction transaction = session.beginTransaction();
-            session.update(user);
-            transaction.commit();
-        } catch (HibernateException e) {
-            throw new RuntimeException(e);
+            try {
+                Transaction transaction = session.beginTransaction();
+                session.update(user);
+                transaction.commit();
+            } catch (HibernateException e) {
+                session.getTransaction().rollback();
+                throw new RepositoryException("There was an exception during updating User");
+            }
         }
     }
 
     @Override
     public void delete(Long id) {
         try (Session session = sessionFactory.openSession()) {
-            Transaction transaction = session.beginTransaction();
-            User user = session.load(User.class, id);
-            session.delete(user);
-            transaction.commit();
-        } catch (HibernateException e) {
-            throw new RuntimeException(e);
+            try {
+                Transaction transaction = session.beginTransaction();
+                User user = session.load(User.class, id);
+                session.delete(user);
+                transaction.commit();
+            } catch (HibernateException e) {
+                session.getTransaction().rollback();
+                throw new RepositoryException("There was an exception during deleting User");
+            }
         }
     }
 }

@@ -11,6 +11,7 @@ import java.util.List;
 
 
 public class UserRepositoryImpl implements UserRepository {
+
     private final ConnectionProvider connectionProvider;
 
     private static final String FIND_ALL_QUERY = "SELECT * FROM users";
