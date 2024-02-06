@@ -14,6 +14,8 @@ public class RoleRepositoryImpl implements RoleRepository {
 
     private final SessionFactory sessionFactory;
 
+    private static final String FIND_ALL_QUERY = "FROM Role";
+
     public RoleRepositoryImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
@@ -30,7 +32,7 @@ public class RoleRepositoryImpl implements RoleRepository {
     @Override
     public List<Role> findAll() {
         try (Session session = sessionFactory.openSession()) {
-            return session.createQuery("From Role", Role.class).list();
+            return session.createQuery(FIND_ALL_QUERY, Role.class).list();
         } catch (HibernateException e) {
             throw new RepositoryException("There was an exception during finding all Roles");
         }

@@ -14,6 +14,8 @@ public class UserRepositoryImpl implements UserRepository {
 
     private final SessionFactory sessionFactory;
 
+    private static final String FIND_ALL_QUERY = "FROM User";
+
     public UserRepositoryImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
@@ -30,7 +32,7 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public List<User> findAll() {
         try (Session session = sessionFactory.openSession()) {
-            return session.createQuery("From User", User.class).list();
+            return session.createQuery(FIND_ALL_QUERY, User.class).list();
         } catch (HibernateException e) {
             throw new RepositoryException("There was an exception during finding all Users");
         }

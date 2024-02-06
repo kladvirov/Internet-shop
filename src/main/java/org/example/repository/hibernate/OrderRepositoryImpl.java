@@ -14,6 +14,8 @@ public class OrderRepositoryImpl implements OrderRepository {
 
     private final SessionFactory sessionFactory;
 
+    private static final String FIND_ALL_QUERY = "FROM Order";
+
     public OrderRepositoryImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
@@ -30,7 +32,7 @@ public class OrderRepositoryImpl implements OrderRepository {
     @Override
     public List<Order> findAll() {
         try (Session session = sessionFactory.openSession()) {
-            return session.createQuery("From Order", Order.class).list();
+            return session.createQuery(FIND_ALL_QUERY, Order.class).list();
         } catch (HibernateException e) {
             throw new RepositoryException("There was an exception during finding all Orders");
         }

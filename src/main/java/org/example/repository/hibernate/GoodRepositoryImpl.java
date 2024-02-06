@@ -14,6 +14,8 @@ public class GoodRepositoryImpl implements GoodRepository {
 
     private final SessionFactory sessionFactory;
 
+    private static final String FIND_ALL_QUERY = "FROM Good";
+
     public GoodRepositoryImpl(SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
@@ -30,7 +32,7 @@ public class GoodRepositoryImpl implements GoodRepository {
     @Override
     public List<Good> findAll() {
         try (Session session = sessionFactory.openSession()) {
-            return session.createQuery("From Good", Good.class).list();
+            return session.createQuery(FIND_ALL_QUERY, Good.class).list();
         } catch (HibernateException e) {
             throw new RepositoryException("There was an exception during finding all Goods");
         }
