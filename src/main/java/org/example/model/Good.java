@@ -22,7 +22,7 @@ public class Good {
     private LocalDate expirationDate;
     @Column(name = "is_available")
     private Boolean isAvailable;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "orders_goods_link",
             joinColumns = {@JoinColumn(name = "good_id")},

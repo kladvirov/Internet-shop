@@ -22,7 +22,7 @@ public class User {
     private String password;
     @Column(name = "is_blocked")
     private Boolean isBlocked;
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private List<Order> orders;
     @ManyToMany
     @JoinTable(
