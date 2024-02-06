@@ -16,9 +16,8 @@ public class Order {
     private LocalDateTime orderDate;
     private String status;
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
     private User user;
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany
     @JoinTable(
             name = "orders_goods_link",
             joinColumns = {@JoinColumn(name = "order_id")},

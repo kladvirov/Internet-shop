@@ -22,9 +22,9 @@ public class User {
     private String password;
     @Column(name = "is_blocked")
     private Boolean isBlocked;
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user")
     private List<Order> orders;
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany
     @JoinTable(
             name = "users_roles_link",
             joinColumns = {@JoinColumn(name = "user_id")},
@@ -45,13 +45,6 @@ public class User {
     public User() {
     }
 
-    public void addOrder(Order order) {
-        order.setUser(this);
-        orders.add(order);
-    }
-    public void removeOrder(Order order) {
-        orders.remove(order);
-    }
     public Long getId() {
         return id;
     }
