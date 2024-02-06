@@ -20,8 +20,8 @@ public class GoodService {
         return goodRepository.findAll();
     }
 
-    public void saveGood(Good good) {
-        goodRepository.save(good);
+    public Good saveGood(Good good) {
+        return goodRepository.save(good);
     }
 
     public void updateGood(Good good) {

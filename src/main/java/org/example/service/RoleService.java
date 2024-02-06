@@ -11,6 +11,7 @@ public class RoleService {
     public RoleService(RoleRepository roleRepository) {
         this.roleRepository = roleRepository;
     }
+
     public Role findRole(Long id) {
         return roleRepository.findById(id);
     }
@@ -19,8 +20,8 @@ public class RoleService {
         return roleRepository.findAll();
     }
 
-    public void saveRole(Role role) {
-        roleRepository.save(role);
+    public Role saveRole(Role role) {
+        return roleRepository.save(role);
     }
 
     public void updateRole(Role role) {
