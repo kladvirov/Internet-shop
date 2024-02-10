@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface GoodRepository {
     public Good findById(Long id);
-    public List<Good> findAll();
+    public List<Good> findAll(int size, int page);
     public Good save(Good good);
     public void update(Good good);
     public void delete(Long id);
