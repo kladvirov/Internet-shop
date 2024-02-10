@@ -7,6 +7,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
 import java.util.List;
 
@@ -30,9 +31,12 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public List<User> findAll() {
+    public List<User> findAll(int size, int page) {
         try (Session session = sessionFactory.openSession()) {
-            return session.createQuery(FIND_ALL_QUERY, User.class).list();
+            Query<User> query = session.createQuery(FIND_ALL_QUERY, User.class);
+            query.setFirstResult(size * page);
+            query.setMaxResults(size);
+            return query.list();
         } catch (HibernateException e) {
             throw new RepositoryException("There was an exception during finding all Users");
         }

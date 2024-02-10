@@ -7,6 +7,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
 import java.util.List;
 
@@ -30,9 +31,12 @@ public class OrderRepositoryImpl implements OrderRepository {
     }
 
     @Override
-    public List<Order> findAll() {
+    public List<Order> findAll(int size, int page) {
         try (Session session = sessionFactory.openSession()) {
-            return session.createQuery(FIND_ALL_QUERY, Order.class).list();
+            Query<Order> query = session.createQuery(FIND_ALL_QUERY, Order.class);
+            query.setFirstResult(size * page);
+            query.setMaxResults(size);
+            return query.list();
         } catch (HibernateException e) {
             throw new RepositoryException("There was an exception during finding all Orders");
         }
@@ -73,7 +77,7 @@ public class OrderRepositoryImpl implements OrderRepository {
             try {
                 Transaction transaction = session.beginTransaction();
                 Order order = session.load(Order.class, id);
-                session.delete(order);
+                session.remove(order);
                 transaction.commit();
             } catch (HibernateException e) {
                 session.getTransaction().rollback();
