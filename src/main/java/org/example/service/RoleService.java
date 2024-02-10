@@ -1,9 +1,12 @@
 package org.example.service;
 
+import org.example.dto.RoleDto;
+import org.example.mapper.RoleMapper;
 import org.example.model.Role;
 import org.example.repository.RoleRepository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class RoleService {
     private final RoleRepository roleRepository;
@@ -12,12 +15,15 @@ public class RoleService {
         this.roleRepository = roleRepository;
     }
 
-    public Role findRole(Long id) {
-        return roleRepository.findById(id);
+    public RoleDto findRole(Long id) {
+        return new RoleMapper().roleToDto(roleRepository.findById(id));
     }
 
-    public List<Role> findAllRoles() {
-        return roleRepository.findAll();
+    public List<RoleDto> findAllRoles(int size, int page) {
+        RoleMapper roleMapper = new RoleMapper();
+        return roleRepository.findAll(size, page).stream()
+                .map(roleMapper::roleToDto)
+                .collect(Collectors.toList());
     }
 
     public Role saveRole(Role role) {

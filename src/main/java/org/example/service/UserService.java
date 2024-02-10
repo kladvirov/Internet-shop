@@ -1,9 +1,12 @@
 package org.example.service;
 
+import org.example.dto.UserDto;
+import org.example.mapper.UserMapper;
 import org.example.model.User;
 import org.example.repository.UserRepository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class UserService {
     private final UserRepository userRepository;
@@ -12,12 +15,15 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public User findUser(Long id) {
-        return userRepository.findById(id);
+    public UserDto findUser(Long id) {
+        return new UserMapper().userToDto(userRepository.findById(id));
     }
 
-    public List<User> findAllUsers() {
-        return userRepository.findAll();
+    public List<UserDto> findAllUsers(int size, int page) {
+        UserMapper userMapper = new UserMapper();
+        return userRepository.findAll(size, page).stream()
+                .map(userMapper::userToDto)
+                .collect(Collectors.toList());
     }
 
     public User saveUser(User user) {

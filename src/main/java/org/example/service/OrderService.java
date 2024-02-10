@@ -1,9 +1,12 @@
 package org.example.service;
 
+import org.example.dto.OrderDto;
+import org.example.mapper.OrderMapper;
 import org.example.model.Order;
 import org.example.repository.OrderRepository;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class OrderService {
     private final OrderRepository orderRepository;
@@ -12,12 +15,15 @@ public class OrderService {
         this.orderRepository = orderRepository;
     }
 
-    public Order findOrder(Long id) {
-        return orderRepository.findById(id);
+    public OrderDto findOrder(Long id) {
+        return new OrderMapper().orderToDto(orderRepository.findById(id));
     }
 
-    public List<Order> findAllOrders() {
-        return orderRepository.findAll();
+    public List<OrderDto> findAllOrders(int size, int page) {
+        OrderMapper orderMapper = new OrderMapper();
+        return orderRepository.findAll(size, page).stream()
+                .map(orderMapper::orderToDto)
+                .collect(Collectors.toList());
     }
 
     public Order saveOrder(Order order) {
