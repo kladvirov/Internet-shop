@@ -1,7 +1,8 @@
 package org.example.model;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -9,11 +10,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@ToString
-@EqualsAndHashCode
+@Data
 @NoArgsConstructor
-@Setter
-@Getter
 @Entity
 @Table(name = "users")
 public class User {
@@ -22,15 +20,19 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "name")
     private String name;
 
+    @Column(name = "surname")
     private String surname;
 
     @Column(name = "birth_date")
     private LocalDate birthDate;
 
+    @Column(name = "login")
     private String login;
 
+    @Column(name = "password")
     private String password;
 
     @Column(name = "is_blocked")

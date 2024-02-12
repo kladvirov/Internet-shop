@@ -6,11 +6,8 @@ import lombok.*;
 import java.util.HashSet;
 import java.util.Set;
 
-@ToString
-@EqualsAndHashCode
+@Data
 @NoArgsConstructor
-@Setter
-@Getter
 @Entity
 @Table(name = "roles")
 public class Role {
@@ -19,6 +16,7 @@ public class Role {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "name")
     private String name;
 
     @ManyToMany(fetch = FetchType.LAZY)

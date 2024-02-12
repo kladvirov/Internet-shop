@@ -7,11 +7,8 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-@ToString
-@EqualsAndHashCode
+@Data
 @NoArgsConstructor
-@Setter
-@Getter
 @Entity
 @Table(name = "orders")
 public class Order {
@@ -23,6 +20,7 @@ public class Order {
     @Column(name = "order_date")
     private LocalDateTime orderDate;
 
+    @Column(name = "status")
     private String status;
 
     @ManyToOne(fetch = FetchType.LAZY)
