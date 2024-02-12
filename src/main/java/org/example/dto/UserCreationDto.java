@@ -4,11 +4,8 @@ import lombok.*;
 
 import java.time.LocalDate;
 
-@ToString
-@EqualsAndHashCode
+@Data
 @NoArgsConstructor
-@Setter
-@Getter
 public class UserCreationDto {
 
     private String name;

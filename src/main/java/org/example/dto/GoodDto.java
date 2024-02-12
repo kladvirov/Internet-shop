@@ -4,12 +4,8 @@ import lombok.*;
 
 import java.math.BigDecimal;
 
-@ToString
-@EqualsAndHashCode
-@AllArgsConstructor
+@Data
 @NoArgsConstructor
-@Setter
-@Getter
 public class GoodDto {
 
     private String name;

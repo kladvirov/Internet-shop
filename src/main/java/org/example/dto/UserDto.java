@@ -4,13 +4,10 @@ import lombok.*;
 
 import java.time.LocalDate;
 
-@ToString
-@EqualsAndHashCode
-@AllArgsConstructor
+@Data
 @NoArgsConstructor
-@Setter
-@Getter
 public class UserDto {
+
     private String name;
 
     private String surname;

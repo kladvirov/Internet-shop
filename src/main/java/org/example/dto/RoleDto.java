@@ -2,12 +2,8 @@ package org.example.dto;
 
 import lombok.*;
 
-@ToString
-@EqualsAndHashCode
-@AllArgsConstructor
+@Data
 @NoArgsConstructor
-@Setter
-@Getter
 public class RoleDto {
 
     private String name;

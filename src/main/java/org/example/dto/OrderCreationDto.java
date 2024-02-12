@@ -4,11 +4,8 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
-@ToString
-@EqualsAndHashCode
+@Data
 @NoArgsConstructor
-@Setter
-@Getter
 public class OrderCreationDto {
 
     private LocalDateTime orderDate;

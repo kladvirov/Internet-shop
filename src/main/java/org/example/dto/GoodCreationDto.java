@@ -5,11 +5,8 @@ import lombok.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-@ToString
-@EqualsAndHashCode
+@Data
 @NoArgsConstructor
-@Setter
-@Getter
 public class GoodCreationDto {
 
     private String name;
