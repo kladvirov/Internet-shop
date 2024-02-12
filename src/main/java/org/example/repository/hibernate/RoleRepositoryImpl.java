@@ -1,8 +1,6 @@
 package org.example.repository.hibernate;
 
-import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
-import lombok.ToString;
 import org.example.exception.RepositoryException;
 import org.example.model.Role;
 import org.example.repository.RoleRepository;
@@ -14,8 +12,6 @@ import org.hibernate.query.Query;
 
 import java.util.List;
 
-@ToString
-@EqualsAndHashCode
 @RequiredArgsConstructor
 public class RoleRepositoryImpl implements RoleRepository {
 

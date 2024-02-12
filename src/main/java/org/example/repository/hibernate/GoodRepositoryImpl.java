@@ -12,8 +12,6 @@ import org.hibernate.query.Query;
 
 import java.util.List;
 
-@ToString
-@EqualsAndHashCode
 @RequiredArgsConstructor
 public class GoodRepositoryImpl implements GoodRepository {
 
