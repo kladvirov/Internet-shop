@@ -8,10 +8,10 @@ import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 
-public class HibernateSessionFactory {
+public class HibernateUtil {
     private static SessionFactory sessionFactory;
 
-    public HibernateSessionFactory(){}
+    public HibernateUtil(){}
 
     public static SessionFactory getSessionFactory() {
         if (sessionFactory == null) {
