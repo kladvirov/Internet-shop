@@ -1,5 +1,8 @@
 package org.example.service;
 
+import lombok.EqualsAndHashCode;
+import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 import org.example.dto.OrderDto;
 import org.example.mapper.OrderMapper;
 import org.example.model.Order;
@@ -8,33 +11,34 @@ import org.example.repository.OrderRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@ToString
+@EqualsAndHashCode
+@RequiredArgsConstructor
 public class OrderService {
+
     private final OrderRepository orderRepository;
 
-    public OrderService(OrderRepository orderRepository) {
-        this.orderRepository = orderRepository;
+    private final OrderMapper orderMapper;
+
+    public OrderDto findById(Long id) {
+        return orderMapper.toDto(orderRepository.findById(id));
     }
 
-    public OrderDto findOrder(Long id) {
-        return new OrderMapper().orderToDto(orderRepository.findById(id));
-    }
-
-    public List<OrderDto> findAllOrders(int size, int page) {
-        OrderMapper orderMapper = new OrderMapper();
+    public List<OrderDto> findAll(int size, int page) {
         return orderRepository.findAll(size, page).stream()
-                .map(orderMapper::orderToDto)
+                .map(orderMapper::toDto)
                 .collect(Collectors.toList());
     }
 
-    public Order saveOrder(Order order) {
-        return orderRepository.save(order);
+    public OrderDto save(Order order) {
+        return orderMapper.toDto(orderRepository.save(order));
     }
 
-    public void updateOrder(Order order) {
+    public void update(Order order) {
         orderRepository.update(order);
     }
 
-    public void deleteOrder(Long id) {
+    public void delete(Long id) {
         orderRepository.delete(id);
     }
 }

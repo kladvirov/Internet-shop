@@ -1,5 +1,8 @@
 package org.example.service;
 
+import lombok.EqualsAndHashCode;
+import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 import org.example.dto.UserDto;
 import org.example.mapper.UserMapper;
 import org.example.model.User;
@@ -8,33 +11,34 @@ import org.example.repository.UserRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@ToString
+@EqualsAndHashCode
+@RequiredArgsConstructor
 public class UserService {
+
     private final UserRepository userRepository;
 
-    public UserService(UserRepository userRepository){
-        this.userRepository = userRepository;
+    private final UserMapper userMapper;
+
+    public UserDto findById(Long id) {
+        return userMapper.toDto(userRepository.findById(id));
     }
 
-    public UserDto findUser(Long id) {
-        return new UserMapper().userToDto(userRepository.findById(id));
-    }
-
-    public List<UserDto> findAllUsers(int size, int page) {
-        UserMapper userMapper = new UserMapper();
+    public List<UserDto> findAll(int size, int page) {
         return userRepository.findAll(size, page).stream()
-                .map(userMapper::userToDto)
+                .map(userMapper::toDto)
                 .collect(Collectors.toList());
     }
 
-    public User saveUser(User user) {
-        return userRepository.save(user);
+    public UserDto save(User user) {
+        return userMapper.toDto(userRepository.save(user));
     }
 
-    public void updateUser(User user) {
+    public void update(User user) {
         userRepository.update(user);
     }
 
-    public void deleteUser(Long id) {
+    public void delete(Long id) {
         userRepository.delete(id);
     }
 
