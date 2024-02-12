@@ -34,8 +34,9 @@ public class Order {
     )
     private Set<Good> goods = new HashSet<>();
 
-    public Order(LocalDateTime orderDate, String status) {
+    public Order(LocalDateTime orderDate, String status, User user) {
         this.orderDate = orderDate;
         this.status = status;
+        this.user = user;
     }
 }
