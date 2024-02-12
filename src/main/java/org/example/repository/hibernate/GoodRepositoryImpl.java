@@ -1,5 +1,6 @@
 package org.example.repository.hibernate;
 
+import lombok.*;
 import org.example.exception.RepositoryException;
 import org.example.model.Good;
 import org.example.repository.GoodRepository;
@@ -11,15 +12,14 @@ import org.hibernate.query.Query;
 
 import java.util.List;
 
+@ToString
+@EqualsAndHashCode
+@RequiredArgsConstructor
 public class GoodRepositoryImpl implements GoodRepository {
 
     private final SessionFactory sessionFactory;
 
     private static final String FIND_ALL_QUERY = "FROM Good";
-
-    public GoodRepositoryImpl(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
 
     @Override
     public Good findById(Long id) {

@@ -1,5 +1,8 @@
 package org.example.repository.hibernate;
 
+import lombok.EqualsAndHashCode;
+import lombok.RequiredArgsConstructor;
+import lombok.ToString;
 import org.example.exception.RepositoryException;
 import org.example.model.Order;
 import org.example.repository.OrderRepository;
@@ -11,15 +14,14 @@ import org.hibernate.query.Query;
 
 import java.util.List;
 
+@ToString
+@EqualsAndHashCode
+@RequiredArgsConstructor
 public class OrderRepositoryImpl implements OrderRepository {
 
     private final SessionFactory sessionFactory;
 
     private static final String FIND_ALL_QUERY = "FROM Order";
-
-    public OrderRepositoryImpl(SessionFactory sessionFactory) {
-        this.sessionFactory = sessionFactory;
-    }
 
     @Override
     public Order findById(Long id) {
