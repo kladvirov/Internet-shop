@@ -6,11 +6,11 @@ import org.example.model.Order;
 
 public class OrderMapper {
 
-    public OrderDto orderToDto(Order order) {
-        return new OrderDto(order.getOrderDate(), order.getStatus());
+    public OrderDto toDto(Order order) {
+        return new OrderDto(order.getStatus());
     }
 
-    public Order dtoToOrder(OrderCreationDto orderDto) {
+    public Order toEntity(OrderCreationDto orderDto) {
         return new Order(orderDto.getOrderDate(), orderDto.getStatus());
     }
 }
