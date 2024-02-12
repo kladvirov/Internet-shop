@@ -1,8 +1,6 @@
 package org.example.service;
 
-import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
-import lombok.ToString;
 import org.example.dto.OrderDto;
 import org.example.mapper.OrderMapper;
 import org.example.model.Order;
@@ -11,8 +9,6 @@ import org.example.repository.OrderRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@ToString
-@EqualsAndHashCode
 @RequiredArgsConstructor
 public class OrderService {
 

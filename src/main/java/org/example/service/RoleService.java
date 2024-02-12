@@ -1,8 +1,6 @@
 package org.example.service;
 
-import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
-import lombok.ToString;
 import org.example.dto.RoleDto;
 import org.example.mapper.RoleMapper;
 import org.example.model.Role;
@@ -11,8 +9,6 @@ import org.example.repository.RoleRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@ToString
-@EqualsAndHashCode
 @RequiredArgsConstructor
 public class RoleService {
 

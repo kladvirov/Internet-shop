@@ -1,8 +1,6 @@
 package org.example.service;
 
-import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
-import lombok.ToString;
 import org.example.dto.GoodDto;
 import org.example.mapper.GoodMapper;
 import org.example.model.Good;
@@ -11,8 +9,6 @@ import org.example.repository.GoodRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@ToString
-@EqualsAndHashCode
 @RequiredArgsConstructor
 public class GoodService {
 

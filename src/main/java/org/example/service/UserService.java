@@ -1,8 +1,6 @@
 package org.example.service;
 
-import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
-import lombok.ToString;
 import org.example.dto.UserDto;
 import org.example.mapper.UserMapper;
 import org.example.model.User;
@@ -11,8 +9,6 @@ import org.example.repository.UserRepository;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@ToString
-@EqualsAndHashCode
 @RequiredArgsConstructor
 public class UserService {
 
