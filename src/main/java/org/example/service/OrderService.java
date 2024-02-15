@@ -1,9 +1,9 @@
 package org.example.service;
 
 import lombok.RequiredArgsConstructor;
+import org.example.dto.OrderCreationDto;
 import org.example.dto.OrderDto;
 import org.example.mapper.OrderMapper;
-import org.example.model.Order;
 import org.example.repository.OrderRepository;
 
 import java.util.List;
@@ -26,12 +26,12 @@ public class OrderService {
                 .collect(Collectors.toList());
     }
 
-    public OrderDto save(Order order) {
-        return orderMapper.toDto(orderRepository.save(order));
+    public OrderDto save(OrderCreationDto orderDto) {
+        return orderMapper.toDto(orderRepository.save(orderMapper.toEntity(orderDto)));
     }
 
-    public void update(Order order) {
-        orderRepository.update(order);
+    public void update(OrderCreationDto orderDto) {
+        orderRepository.update(orderMapper.toEntity(orderDto));
     }
 
     public void delete(Long id) {

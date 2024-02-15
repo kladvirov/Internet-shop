@@ -1,9 +1,9 @@
 package org.example.service;
 
 import lombok.RequiredArgsConstructor;
+import org.example.dto.UserCreationDto;
 import org.example.dto.UserDto;
 import org.example.mapper.UserMapper;
-import org.example.model.User;
 import org.example.repository.UserRepository;
 
 import java.util.List;
@@ -26,16 +26,15 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
-    public UserDto save(User user) {
-        return userMapper.toDto(userRepository.save(user));
+    public UserDto save(UserCreationDto userDto) {
+        return userMapper.toDto(userRepository.save(userMapper.toEntity(userDto)));
     }
 
-    public void update(User user) {
-        userRepository.update(user);
+    public void update(UserCreationDto userDto) {
+        userRepository.update(userMapper.toEntity(userDto));
     }
 
     public void delete(Long id) {
         userRepository.delete(id);
     }
-
 }

@@ -1,9 +1,9 @@
 package org.example.service;
 
 import lombok.RequiredArgsConstructor;
+import org.example.dto.RoleCreationDto;
 import org.example.dto.RoleDto;
 import org.example.mapper.RoleMapper;
-import org.example.model.Role;
 import org.example.repository.RoleRepository;
 
 import java.util.List;
@@ -26,16 +26,15 @@ public class RoleService {
                 .collect(Collectors.toList());
     }
 
-    public RoleDto save(Role role) {
-        return roleMapper.toDto(roleRepository.save(role));
+    public RoleDto save(RoleCreationDto roleDto) {
+        return roleMapper.toDto(roleRepository.save(roleMapper.toEntity(roleDto)));
     }
 
-    public void update(Role role) {
-        roleRepository.update(role);
+    public void update(RoleCreationDto roleDto) {
+        roleRepository.update(roleMapper.toEntity(roleDto));
     }
 
     public void delete(Long id) {
         roleRepository.delete(id);
     }
-
 }

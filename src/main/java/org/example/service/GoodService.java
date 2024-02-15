@@ -1,9 +1,10 @@
 package org.example.service;
 
 import lombok.RequiredArgsConstructor;
+import org.example.dto.GoodCreationDto;
 import org.example.dto.GoodDto;
+import org.example.dto.GoodUpdateDto;
 import org.example.mapper.GoodMapper;
-import org.example.model.Good;
 import org.example.repository.GoodRepository;
 
 import java.util.List;
@@ -26,12 +27,12 @@ public class GoodService {
                 .collect(Collectors.toList());
     }
 
-    public GoodDto save(Good good) {
-        return goodMapper.toDto(goodRepository.save(good));
+    public GoodDto save(GoodCreationDto goodDto) {
+        return goodMapper.toDto(goodRepository.save(goodMapper.toEntity(goodDto)));
     }
 
-    public void update(Good good) {
-        goodRepository.update(good);
+    public void update(GoodUpdateDto goodDto) {
+        goodRepository.update(goodMapper.toEntity(goodDto));
     }
 
     public void delete(Long id) {
