@@ -1,4 +1,4 @@
-package org.example.util.hibernate;
+package org.example.util;
 
 import org.example.model.Good;
 import org.example.model.Order;
