@@ -33,6 +33,8 @@ public class Good {
     @Column(name = "is_available")
     private Boolean isAvailable;
 
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
             name = "orders_goods_link",
