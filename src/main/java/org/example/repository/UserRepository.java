@@ -5,9 +5,9 @@ import org.example.model.User;
 import java.util.List;
 
 public interface UserRepository {
-    public User findById(Long id);
-    public List<User> findAll(int size, int page);
-    public User save(User user);
-    public void update(User user);
-    public void delete(Long id);
+    User findById(Long id);
+    List<User> findAll(int size, int page);
+    User save(User user);
+    void update(User user);
+    void delete(Long id);
 }

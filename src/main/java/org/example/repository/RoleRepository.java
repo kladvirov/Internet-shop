@@ -5,9 +5,9 @@ import org.example.model.Role;
 import java.util.List;
 
 public interface RoleRepository {
-    public Role findById(Long id);
-    public List<Role> findAll(int size, int page);
-    public Role save(Role role);
-    public void update(Role role);
-    public void delete(Long id);
+    Role findById(Long id);
+    List<Role> findAll(int size, int page);
+    Role save(Role role);
+    void update(Role role);
+    void delete(Long id);
 }
