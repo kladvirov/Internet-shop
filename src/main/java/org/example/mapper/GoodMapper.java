@@ -2,18 +2,16 @@ package org.example.mapper;
 
 import org.example.dto.GoodCreationDto;
 import org.example.dto.GoodDto;
+import org.example.dto.GoodUpdateDto;
 import org.example.model.Good;
+import org.mapstruct.Mapper;
 
-import java.util.HashSet;
+@Mapper
+public interface GoodMapper {
 
-public class GoodMapper {
+    Good toEntity(GoodCreationDto goodDto);
 
-    public GoodDto toDto(Good good) {
-        return new GoodDto(good.getName(), good.getPrice(), good.getIsAvailable());
-    }
+    Good toEntity(GoodUpdateDto goodUpdateDto);
 
-    public Good toEntity(GoodCreationDto goodDto) {
-        return new Good(goodDto.getName(), goodDto.getPrice(), goodDto.getCreateDate(),
-                goodDto.getExpirationDate(), goodDto.getIsAvailable(), new HashSet<>());
-    }
+    GoodDto toDto(Good good);
 }

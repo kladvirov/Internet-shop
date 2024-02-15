@@ -1,15 +1,14 @@
 package org.example.mapper;
 
+import org.example.dto.RoleCreationDto;
 import org.example.dto.RoleDto;
 import org.example.model.Role;
+import org.mapstruct.Mapper;
 
-public class RoleMapper {
+@Mapper
+public interface RoleMapper {
 
-    public RoleDto toDto(Role role) {
-        return new RoleDto(role.getName());
-    }
+    Role toEntity(RoleCreationDto roleDto);
 
-    public Role toEntity(RoleDto roleDto) {
-        return new Role(roleDto.getName());
-    }
+    RoleDto toDto(Role role);
 }
