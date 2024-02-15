@@ -3,14 +3,15 @@ package org.example.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.example.model.User;
+
+import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrderCreationDto {
 
-    private User user;
+    private Long userId;
 
-    private String status;
+    private List<Long> goodIds;
 }

@@ -1,8 +1,11 @@
 package org.example.dto;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -19,5 +22,5 @@ public class UserCreationDto {
 
     private String password;
 
-    private Boolean isBlocked;
+    private List<Long> roleIds;
 }
