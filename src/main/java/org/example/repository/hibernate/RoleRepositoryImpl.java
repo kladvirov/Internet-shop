@@ -45,7 +45,7 @@ public class RoleRepositoryImpl implements RoleRepository {
         try (Session session = sessionFactory.openSession()) {
             try {
                 Transaction transaction = session.beginTransaction();
-                session.save(role);
+                session.persist(role);
                 transaction.commit();
             } catch (HibernateException e) {
                 session.getTransaction().rollback();
@@ -60,7 +60,7 @@ public class RoleRepositoryImpl implements RoleRepository {
         try (Session session = sessionFactory.openSession()) {
             try {
                 Transaction transaction = session.beginTransaction();
-                session.update(role);
+                session.merge(role);
                 transaction.commit();
             } catch (HibernateException e) {
                 session.getTransaction().rollback();
@@ -74,8 +74,8 @@ public class RoleRepositoryImpl implements RoleRepository {
         try (Session session = sessionFactory.openSession()) {
             try {
                 Transaction transaction = session.beginTransaction();
-                Role role = session.load(Role.class, id);
-                session.delete(role);
+                Role role = session.get(Role.class, id);
+                session.remove(role);
                 transaction.commit();
             } catch (HibernateException e) {
                 session.getTransaction().rollback();

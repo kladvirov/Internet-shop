@@ -45,7 +45,7 @@ public class GoodRepositoryImpl implements GoodRepository {
         try (Session session = sessionFactory.openSession()) {
             try {
                 Transaction transaction = session.beginTransaction();
-                session.save(good);
+                session.persist(good);
                 transaction.commit();
             } catch (HibernateException e) {
                 session.getTransaction().rollback();
@@ -60,7 +60,7 @@ public class GoodRepositoryImpl implements GoodRepository {
         try (Session session = sessionFactory.openSession()) {
             try {
                 Transaction transaction = session.beginTransaction();
-                session.update(good);
+                session.merge(good);
                 transaction.commit();
             } catch (HibernateException e) {
                 session.getTransaction().rollback();
@@ -74,8 +74,8 @@ public class GoodRepositoryImpl implements GoodRepository {
         try (Session session = sessionFactory.openSession()) {
             try {
                 Transaction transaction = session.beginTransaction();
-                Good good = session.load(Good.class, id);
-                session.delete(good);
+                Good good = session.get(Good.class, id);
+                session.remove(good);
                 transaction.commit();
             } catch (HibernateException e) {
                 session.getTransaction().rollback();

@@ -17,7 +17,7 @@ public class OrderRepositoryImpl implements OrderRepository {
 
     private final SessionFactory sessionFactory;
 
-    private static final String FIND_ALL_QUERY = "FROM Order";
+    private static final String FIND_ALL_QUERY = "from Order order left join fetch order.goods";
 
     @Override
     public Order findById(Long id) {
@@ -45,7 +45,7 @@ public class OrderRepositoryImpl implements OrderRepository {
         try (Session session = sessionFactory.openSession()) {
             try {
                 Transaction transaction = session.beginTransaction();
-                session.save(order);
+                session.persist(order);
                 transaction.commit();
             } catch (HibernateException e) {
                 session.getTransaction().rollback();
@@ -60,7 +60,7 @@ public class OrderRepositoryImpl implements OrderRepository {
         try (Session session = sessionFactory.openSession()) {
             try {
                 Transaction transaction = session.beginTransaction();
-                session.update(order);
+                session.merge(order);
                 transaction.commit();
             } catch (HibernateException e) {
                 session.getTransaction().rollback();
@@ -74,7 +74,7 @@ public class OrderRepositoryImpl implements OrderRepository {
         try (Session session = sessionFactory.openSession()) {
             try {
                 Transaction transaction = session.beginTransaction();
-                Order order = session.load(Order.class, id);
+                Order order = session.get(Order.class, id);
                 session.remove(order);
                 transaction.commit();
             } catch (HibernateException e) {

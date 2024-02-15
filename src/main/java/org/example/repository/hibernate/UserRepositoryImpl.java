@@ -21,7 +21,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public User findById(Long id) {
-        try(Session session = sessionFactory.openSession()) {
+        try (Session session = sessionFactory.openSession()) {
             return session.get(User.class, id);
         } catch (HibernateException e) {
             throw new RepositoryException("There was an exception during finding User by id");
@@ -45,7 +45,7 @@ public class UserRepositoryImpl implements UserRepository {
         try (Session session = sessionFactory.openSession()) {
             try {
                 Transaction transaction = session.beginTransaction();
-                session.save(user);
+                session.persist(user);
                 transaction.commit();
             } catch (HibernateException e) {
                 session.getTransaction().rollback();
@@ -60,7 +60,7 @@ public class UserRepositoryImpl implements UserRepository {
         try (Session session = sessionFactory.openSession()) {
             try {
                 Transaction transaction = session.beginTransaction();
-                session.update(user);
+                session.merge(user);
                 transaction.commit();
             } catch (HibernateException e) {
                 session.getTransaction().rollback();
@@ -74,8 +74,8 @@ public class UserRepositoryImpl implements UserRepository {
         try (Session session = sessionFactory.openSession()) {
             try {
                 Transaction transaction = session.beginTransaction();
-                User user = session.load(User.class, id);
-                session.delete(user);
+                User user = session.get(User.class, id);
+                session.remove(user);
                 transaction.commit();
             } catch (HibernateException e) {
                 session.getTransaction().rollback();
