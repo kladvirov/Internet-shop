@@ -1,6 +1,6 @@
 package org.example.repository.hibernate;
 
-import lombok.*;
+import lombok.RequiredArgsConstructor;
 import org.example.exception.RepositoryException;
 import org.example.model.Good;
 import org.example.repository.GoodRepository;
@@ -83,4 +83,5 @@ public class GoodRepositoryImpl implements GoodRepository {
             }
         }
     }
+
 }
