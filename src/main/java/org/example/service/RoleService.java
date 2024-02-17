@@ -4,10 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.example.dto.RoleCreationDto;
 import org.example.dto.RoleDto;
 import org.example.mapper.RoleMapper;
+import org.example.model.Role;
 import org.example.repository.RoleRepository;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 public class RoleService {
@@ -21,13 +21,12 @@ public class RoleService {
     }
 
     public List<RoleDto> findAll(int size, int page) {
-        return roleRepository.findAll(size, page).stream()
-                .map(roleMapper::toDto)
-                .collect(Collectors.toList());
+        return roleMapper.toDto(roleRepository.findAll(size, page));
     }
 
     public RoleDto save(RoleCreationDto roleDto) {
-        return roleMapper.toDto(roleRepository.save(roleMapper.toEntity(roleDto)));
+        Role entity = roleMapper.toEntity(roleDto);
+        return roleMapper.toDto(roleRepository.save(entity));
     }
 
     public void update(RoleCreationDto roleDto) {
@@ -37,4 +36,5 @@ public class RoleService {
     public void delete(Long id) {
         roleRepository.delete(id);
     }
+
 }

@@ -4,10 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.example.dto.OrderCreationDto;
 import org.example.dto.OrderDto;
 import org.example.mapper.OrderMapper;
+import org.example.model.Order;
 import org.example.repository.OrderRepository;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 public class OrderService {
@@ -21,13 +21,12 @@ public class OrderService {
     }
 
     public List<OrderDto> findAll(int size, int page) {
-        return orderRepository.findAll(size, page).stream()
-                .map(orderMapper::toDto)
-                .collect(Collectors.toList());
+        return orderMapper.toDto(orderRepository.findAll(size, page));
     }
 
     public OrderDto save(OrderCreationDto orderDto) {
-        return orderMapper.toDto(orderRepository.save(orderMapper.toEntity(orderDto)));
+        Order entity = orderMapper.toEntity(orderDto);
+        return orderMapper.toDto(orderRepository.save(entity));
     }
 
     public void update(OrderCreationDto orderDto) {
@@ -37,4 +36,5 @@ public class OrderService {
     public void delete(Long id) {
         orderRepository.delete(id);
     }
+
 }

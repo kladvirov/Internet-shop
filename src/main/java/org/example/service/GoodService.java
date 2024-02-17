@@ -5,10 +5,10 @@ import org.example.dto.GoodCreationDto;
 import org.example.dto.GoodDto;
 import org.example.dto.GoodUpdateDto;
 import org.example.mapper.GoodMapper;
+import org.example.model.Good;
 import org.example.repository.GoodRepository;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 public class GoodService {
@@ -22,13 +22,12 @@ public class GoodService {
     }
 
     public List<GoodDto> findAll(int size, int page) {
-        return goodRepository.findAll(size, page).stream()
-                .map(goodMapper::toDto)
-                .collect(Collectors.toList());
+        return goodMapper.toDto(goodRepository.findAll(size, page));
     }
 
     public GoodDto save(GoodCreationDto goodDto) {
-        return goodMapper.toDto(goodRepository.save(goodMapper.toEntity(goodDto)));
+        Good entity = goodMapper.toEntity(goodDto);
+        return goodMapper.toDto(goodRepository.save(entity));
     }
 
     public void update(GoodUpdateDto goodDto) {
@@ -38,4 +37,5 @@ public class GoodService {
     public void delete(Long id) {
         goodRepository.delete(id);
     }
+
 }

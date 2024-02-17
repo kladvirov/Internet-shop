@@ -4,10 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.example.dto.UserCreationDto;
 import org.example.dto.UserDto;
 import org.example.mapper.UserMapper;
+import org.example.model.User;
 import org.example.repository.UserRepository;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 public class UserService {
@@ -21,13 +21,12 @@ public class UserService {
     }
 
     public List<UserDto> findAll(int size, int page) {
-        return userRepository.findAll(size, page).stream()
-                .map(userMapper::toDto)
-                .collect(Collectors.toList());
+        return userMapper.toDto(userRepository.findAll(size, page));
     }
 
     public UserDto save(UserCreationDto userDto) {
-        return userMapper.toDto(userRepository.save(userMapper.toEntity(userDto)));
+        User entity = userMapper.toEntity(userDto);
+        return userMapper.toDto(userRepository.save(entity));
     }
 
     public void update(UserCreationDto userDto) {
@@ -37,4 +36,5 @@ public class UserService {
     public void delete(Long id) {
         userRepository.delete(id);
     }
+
 }
