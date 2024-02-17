@@ -24,6 +24,10 @@ public interface OrderMapper {
     @Mapping(target = "goodIds", source = "order.goods", qualifiedByName = "mapGoodsToGoodIds")
     OrderDto toDto(Order order);
 
+    @Mapping(source = "user.id", target = "userId")
+    @Mapping(target = "goodIds", source = "order.goods", qualifiedByName = "mapGoodsToGoodIds")
+    List<OrderDto> toDto(List<Order> orders);
+
     @Named("mapGoodIdsToGoods")
     default Set<Good> mapGoodIdsToGoods(List<Long> goodIds) {
         return goodIds.stream()
@@ -41,4 +45,5 @@ public interface OrderMapper {
                 .map(Good::getId)
                 .collect(Collectors.toList());
     }
+
 }

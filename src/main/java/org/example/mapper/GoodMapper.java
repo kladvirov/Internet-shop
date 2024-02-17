@@ -6,6 +6,8 @@ import org.example.dto.GoodUpdateDto;
 import org.example.model.Good;
 import org.mapstruct.Mapper;
 
+import java.util.List;
+
 @Mapper
 public interface GoodMapper {
 
@@ -14,4 +16,7 @@ public interface GoodMapper {
     Good toEntity(GoodUpdateDto goodUpdateDto);
 
     GoodDto toDto(Good good);
+
+    List<GoodDto> toDto(List<Good> goods);
+
 }
