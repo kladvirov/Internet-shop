@@ -14,4 +14,5 @@ public class GoodUpdateDto {
     private BigDecimal price;
 
     private Boolean isAvailable;
+
 }

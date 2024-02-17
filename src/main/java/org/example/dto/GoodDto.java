@@ -1,6 +1,8 @@
 package org.example.dto;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
@@ -16,4 +18,5 @@ public class GoodDto {
     private BigDecimal price;
 
     private Boolean isAvailable;
+
 }

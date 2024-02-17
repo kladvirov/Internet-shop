@@ -14,4 +14,5 @@ public class OrderCreationDto {
     private Long userId;
 
     private List<Long> goodIds;
+
 }

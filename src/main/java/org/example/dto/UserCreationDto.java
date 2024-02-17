@@ -23,4 +23,5 @@ public class UserCreationDto {
     private String password;
 
     private List<Long> roleIds;
+
 }

@@ -21,4 +21,5 @@ public class OrderDto {
     private String status;
 
     private List<Long> goodIds;
+
 }

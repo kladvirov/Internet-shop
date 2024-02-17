@@ -1,6 +1,8 @@
 package org.example.dto;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -19,4 +21,5 @@ public class GoodCreationDto {
     private LocalDate expirationDate;
 
     private Boolean isAvailable;
+
 }

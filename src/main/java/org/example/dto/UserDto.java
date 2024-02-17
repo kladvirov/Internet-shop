@@ -1,6 +1,8 @@
 package org.example.dto;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
@@ -18,4 +20,5 @@ public class UserDto {
     private LocalDate birthDate;
 
     private String login;
+
 }
