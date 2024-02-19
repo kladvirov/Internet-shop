@@ -7,13 +7,14 @@ import by.kladvirov.model.Order;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Named;
+import org.mapstruct.ReportingPolicy;
 
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 
-@Mapper
+@Mapper(componentModel = "SPRING", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface OrderMapper {
 
     @Mapping(source = "userId", target = "user.id")

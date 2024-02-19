@@ -1,18 +1,20 @@
 package by.kladvirov.repository.hibernate;
 
-import by.kladvirov.model.User;
-import lombok.RequiredArgsConstructor;
 import by.kladvirov.exception.RepositoryException;
+import by.kladvirov.model.User;
 import by.kladvirov.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @RequiredArgsConstructor
+@Repository
 public class UserRepositoryImpl implements UserRepository {
 
     private final SessionFactory sessionFactory;

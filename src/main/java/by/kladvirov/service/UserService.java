@@ -6,10 +6,12 @@ import by.kladvirov.mapper.UserMapper;
 import by.kladvirov.model.User;
 import by.kladvirov.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @RequiredArgsConstructor
+@Service
 public class UserService {
 
     private final UserRepository userRepository;

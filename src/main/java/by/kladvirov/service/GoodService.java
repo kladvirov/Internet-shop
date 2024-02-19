@@ -7,10 +7,12 @@ import by.kladvirov.mapper.GoodMapper;
 import by.kladvirov.model.Good;
 import by.kladvirov.repository.GoodRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @RequiredArgsConstructor
+@Service
 public class GoodService {
 
     private final GoodRepository goodRepository;

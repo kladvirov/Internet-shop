@@ -1,18 +1,20 @@
 package by.kladvirov.repository.hibernate;
 
-import by.kladvirov.model.Role;
-import lombok.RequiredArgsConstructor;
 import by.kladvirov.exception.RepositoryException;
+import by.kladvirov.model.Role;
 import by.kladvirov.repository.RoleRepository;
+import lombok.RequiredArgsConstructor;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @RequiredArgsConstructor
+@Repository
 public class RoleRepositoryImpl implements RoleRepository {
 
     private final SessionFactory sessionFactory;

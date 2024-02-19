@@ -6,10 +6,12 @@ import by.kladvirov.mapper.RoleMapper;
 import by.kladvirov.model.Role;
 import by.kladvirov.repository.RoleRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @RequiredArgsConstructor
+@Service
 public class RoleService {
 
     private final RoleRepository roleRepository;

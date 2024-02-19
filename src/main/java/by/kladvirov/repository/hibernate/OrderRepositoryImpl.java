@@ -1,18 +1,20 @@
 package by.kladvirov.repository.hibernate;
 
-import by.kladvirov.model.Order;
-import lombok.RequiredArgsConstructor;
 import by.kladvirov.exception.RepositoryException;
+import by.kladvirov.model.Order;
 import by.kladvirov.repository.OrderRepository;
+import lombok.RequiredArgsConstructor;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @RequiredArgsConstructor
+@Repository
 public class OrderRepositoryImpl implements OrderRepository {
 
     private final SessionFactory sessionFactory;

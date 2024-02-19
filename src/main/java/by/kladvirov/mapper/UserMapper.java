@@ -4,10 +4,11 @@ import by.kladvirov.dto.UserCreationDto;
 import by.kladvirov.dto.UserDto;
 import by.kladvirov.model.User;
 import org.mapstruct.Mapper;
+import org.mapstruct.ReportingPolicy;
 
 import java.util.List;
 
-@Mapper
+@Mapper(componentModel = "SPRING", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface UserMapper {
 
     User toEntity(UserCreationDto userDto);
