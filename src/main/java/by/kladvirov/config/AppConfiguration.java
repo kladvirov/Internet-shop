@@ -1,7 +1,5 @@
 package by.kladvirov.config;
 
-import by.kladvirov.Quote;
-import by.kladvirov.Quoter;
 import by.kladvirov.model.Good;
 import by.kladvirov.model.Order;
 import by.kladvirov.model.Role;
@@ -27,9 +25,5 @@ public class AppConfiguration {
         return configuration.buildSessionFactory(builder.build());
     }
 
-    @Bean
-    public Quote Quote(){
-        return new Quoter();
-    }
 }
 
