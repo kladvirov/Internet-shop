@@ -16,6 +16,12 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok:1.18.30'
     implementation 'org.mapstruct:mapstruct:1.5.5.Final'
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
+    implementation 'org.springframework:spring-core:6.1.4'
+    annotationProcessor 'org.springframework:spring-core:6.1.4'
+    implementation 'org.springframework:spring-beans:6.1.4'
+    annotationProcessor 'org.springframework:spring-beans:6.1.4'
+    implementation 'org.springframework:spring-context:6.1.4'
+    annotationProcessor 'org.springframework:spring-context:6.1.4'
 }
 
 test {
