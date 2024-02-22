@@ -65,7 +65,7 @@ public class User {
     )
     private Set<Role> roles = new HashSet<>();
 
-    public User(String name, String surname, LocalDate birthDate, String login, String password, Boolean isBlocked) {
+    public User(String name, String surname, LocalDate birthDate, String login, String password, Boolean isBlocked, boolean add) {
         this.name = name;
         this.surname = surname;
         this.birthDate = birthDate;
