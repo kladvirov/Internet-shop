@@ -31,8 +31,8 @@ public class UserService {
         return userMapper.toDto(userRepository.save(entity));
     }
 
-    public void update(UserCreationDto userDto) {
-        userRepository.update(userMapper.toEntity(userDto));
+    public void update(Long id, UserCreationDto userDto) {
+        userRepository.update(id, userMapper.toEntity(userDto));
     }
 
     public void delete(Long id) {
