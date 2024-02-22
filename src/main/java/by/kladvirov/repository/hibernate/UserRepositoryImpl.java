@@ -58,10 +58,11 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public void update(User user) {
+    public void update(Long id, User user) {
         try (Session session = sessionFactory.openSession()) {
             try {
                 Transaction transaction = session.beginTransaction();
+                user.setId(id);
                 session.merge(user);
                 transaction.commit();
             } catch (HibernateException e) {
