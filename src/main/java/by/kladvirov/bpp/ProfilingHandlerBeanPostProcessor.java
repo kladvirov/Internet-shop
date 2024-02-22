@@ -2,28 +2,22 @@ package by.kladvirov.bpp;
 
 import by.kladvirov.annotation.Profiling;
 import by.kladvirov.bpp.controller.ProfilingController;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.stereotype.Component;
 
-import javax.management.MBeanServer;
-import javax.management.ObjectName;
-import java.lang.management.ManagementFactory;
 import java.lang.reflect.Proxy;
 import java.util.HashMap;
 import java.util.Map;
 
 @Component
+@NoArgsConstructor
 public class ProfilingHandlerBeanPostProcessor implements BeanPostProcessor {
 
     private Map<String, Class> map = new HashMap<>();
 
     private ProfilingController controller = new ProfilingController();
-
-    public ProfilingHandlerBeanPostProcessor() throws Exception {
-        MBeanServer platformMBeanServer = ManagementFactory.getPlatformMBeanServer();
-        platformMBeanServer.registerMBean(controller, new ObjectName("profiling", "name", "controller"));
-    }
 
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
