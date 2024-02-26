@@ -12,6 +12,7 @@ import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Repository
@@ -22,9 +23,9 @@ public class GoodRepositoryImpl implements GoodRepository {
     private static final String FIND_ALL_QUERY = "FROM Good";
 
     @Override
-    public Good findById(Long id) {
+    public Optional<Good> findById(Long id) {
         try (Session session = sessionFactory.openSession()) {
-            return session.get(Good.class, id);
+            return Optional.of(session.get(Good.class, id));
         } catch (HibernateException e) {
             throw new RepositoryException("There was an exception during finding Good by id");
         }
@@ -58,10 +59,11 @@ public class GoodRepositoryImpl implements GoodRepository {
     }
 
     @Override
-    public void update(Good good) {
+    public void update(Long id, Good good) {
         try (Session session = sessionFactory.openSession()) {
             try {
                 Transaction transaction = session.beginTransaction();
+                good.setId(id);
                 session.merge(good);
                 transaction.commit();
             } catch (HibernateException e) {

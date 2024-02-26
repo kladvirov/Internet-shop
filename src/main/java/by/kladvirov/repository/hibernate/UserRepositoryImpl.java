@@ -12,6 +12,7 @@ import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Repository
@@ -22,9 +23,9 @@ public class UserRepositoryImpl implements UserRepository {
     private static final String FIND_ALL_QUERY = "FROM User";
 
     @Override
-    public User findById(Long id) {
+    public Optional<User> findById(Long id) {
         try (Session session = sessionFactory.openSession()) {
-            return session.get(User.class, id);
+            return Optional.of(session.get(User.class, id));
         } catch (HibernateException e) {
             throw new RepositoryException("There was an exception during finding User by id");
         }

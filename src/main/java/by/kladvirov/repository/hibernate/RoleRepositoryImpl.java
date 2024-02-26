@@ -12,6 +12,7 @@ import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Repository
@@ -22,9 +23,9 @@ public class RoleRepositoryImpl implements RoleRepository {
     private static final String FIND_ALL_QUERY = "FROM Role";
 
     @Override
-    public Role findById(Long id) {
+    public Optional<Role> findById(Long id) {
         try (Session session = sessionFactory.openSession()) {
-            return session.get(Role.class, id);
+            return Optional.of(session.get(Role.class, id));
         } catch (HibernateException e) {
             throw new RepositoryException("There was an exception during finding Role by id");
         }
@@ -58,10 +59,11 @@ public class RoleRepositoryImpl implements RoleRepository {
     }
 
     @Override
-    public void update(Role role) {
+    public void update(Long id, Role role) {
         try (Session session = sessionFactory.openSession()) {
             try {
                 Transaction transaction = session.beginTransaction();
+                role.setId(id);
                 session.merge(role);
                 transaction.commit();
             } catch (HibernateException e) {
