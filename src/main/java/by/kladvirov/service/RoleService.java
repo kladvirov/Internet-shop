@@ -2,6 +2,7 @@ package by.kladvirov.service;
 
 import by.kladvirov.dto.RoleCreationDto;
 import by.kladvirov.dto.RoleDto;
+import by.kladvirov.exception.ServiceException;
 import by.kladvirov.mapper.RoleMapper;
 import by.kladvirov.model.Role;
 import by.kladvirov.repository.RoleRepository;
@@ -19,7 +20,8 @@ public class RoleService {
     private final RoleMapper roleMapper;
 
     public RoleDto findById(Long id) {
-        return roleMapper.toDto(roleRepository.findById(id));
+        Role role = roleRepository.findById(id).orElseThrow(() -> new ServiceException("There is no entity with the following id"));
+        return roleMapper.toDto(role);
     }
 
     public List<RoleDto> findAll(int size, int page) {
@@ -31,8 +33,8 @@ public class RoleService {
         return roleMapper.toDto(roleRepository.save(entity));
     }
 
-    public void update(RoleCreationDto roleDto) {
-        roleRepository.update(roleMapper.toEntity(roleDto));
+    public void update(Long id, RoleCreationDto roleDto) {
+        roleRepository.update(id, roleMapper.toEntity(roleDto));
     }
 
     public void delete(Long id) {

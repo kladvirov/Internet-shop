@@ -3,6 +3,7 @@ package by.kladvirov.service;
 import by.kladvirov.dto.GoodCreationDto;
 import by.kladvirov.dto.GoodDto;
 import by.kladvirov.dto.GoodUpdateDto;
+import by.kladvirov.exception.ServiceException;
 import by.kladvirov.mapper.GoodMapper;
 import by.kladvirov.model.Good;
 import by.kladvirov.repository.GoodRepository;
@@ -20,7 +21,8 @@ public class GoodService {
     private final GoodMapper goodMapper;
 
     public GoodDto findById(Long id) {
-        return goodMapper.toDto(goodRepository.findById(id));
+        Good good = goodRepository.findById(id).orElseThrow(() -> new ServiceException("There is no entity with the following id"));
+        return goodMapper.toDto(good);
     }
 
     public List<GoodDto> findAll(int size, int page) {
@@ -32,8 +34,8 @@ public class GoodService {
         return goodMapper.toDto(goodRepository.save(entity));
     }
 
-    public void update(GoodUpdateDto goodDto) {
-        goodRepository.update(goodMapper.toEntity(goodDto));
+    public void update(Long id, GoodUpdateDto goodDto) {
+        goodRepository.update(id, goodMapper.toEntity(goodDto));
     }
 
     public void delete(Long id) {

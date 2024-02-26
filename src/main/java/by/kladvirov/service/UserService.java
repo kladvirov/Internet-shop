@@ -2,6 +2,7 @@ package by.kladvirov.service;
 
 import by.kladvirov.dto.UserCreationDto;
 import by.kladvirov.dto.UserDto;
+import by.kladvirov.exception.ServiceException;
 import by.kladvirov.mapper.UserMapper;
 import by.kladvirov.model.User;
 import by.kladvirov.repository.UserRepository;
@@ -19,7 +20,8 @@ public class UserService {
     private final UserMapper userMapper;
 
     public UserDto findById(Long id) {
-        return userMapper.toDto(userRepository.findById(id));
+        User user = userRepository.findById(id).orElseThrow(() -> new ServiceException("There is no entity with the following id"));
+        return userMapper.toDto(user);
     }
 
     public List<UserDto> findAll(int size, int page) {
