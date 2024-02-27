@@ -4,7 +4,7 @@ import by.kladvirov.dto.OrderCreationDto;
 import by.kladvirov.dto.OrderDto;
 import by.kladvirov.service.OrderService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,15 +18,11 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/orders")
 public class OrderController {
 
     private final OrderService orderService;
-
-    @Autowired
-    public OrderController(OrderService orderService) {
-        this.orderService = orderService;
-    }
 
     @GetMapping("/{id}")
     public OrderDto getById(@PathVariable("id") Long id) {
@@ -46,15 +42,13 @@ public class OrderController {
     }
 
     @PutMapping("{id}")
-    public String update(@PathVariable("id") Long id, @RequestBody @Valid OrderCreationDto orderCreationDto) {
+    public void update(@PathVariable("id") Long id, @RequestBody @Valid OrderCreationDto orderCreationDto) {
         orderService.update(id, orderCreationDto);
-        return "Order has been updated successfully";
     }
 
     @DeleteMapping("{id}")
-    public String deleteById(@PathVariable("id") Long id) {
+    public void deleteById(@PathVariable("id") Long id) {
         orderService.delete(id);
-        return "Order has been deleted successfully";
     }
 
 }

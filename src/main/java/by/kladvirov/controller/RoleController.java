@@ -4,7 +4,7 @@ import by.kladvirov.dto.RoleCreationDto;
 import by.kladvirov.dto.RoleDto;
 import by.kladvirov.service.RoleService;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,15 +18,11 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/roles")
 public class RoleController {
 
     private final RoleService roleService;
-
-    @Autowired
-    public RoleController(RoleService roleService) {
-        this.roleService = roleService;
-    }
 
     @GetMapping("/{id}")
     public RoleDto getById(@PathVariable("id") Long id) {
@@ -46,15 +42,13 @@ public class RoleController {
     }
 
     @PutMapping("{id}")
-    public String update(@PathVariable("id") Long id, @RequestBody @Valid RoleCreationDto roleCreationDto) {
+    public void update(@PathVariable("id") Long id, @RequestBody @Valid RoleCreationDto roleCreationDto) {
         roleService.update(id, roleCreationDto);
-        return "Role has been updated successfully";
     }
 
     @DeleteMapping("{id}")
-    public String deleteById(@PathVariable("id") Long id) {
+    public void deleteById(@PathVariable("id") Long id) {
         roleService.delete(id);
-        return "Role has been deleted successfully";
     }
 
 }
