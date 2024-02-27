@@ -63,8 +63,9 @@ public class RoleRepositoryImpl implements RoleRepository {
         try (Session session = sessionFactory.openSession()) {
             try {
                 Transaction transaction = session.beginTransaction();
-                role.setId(id);
-                session.merge(role);
+                Role oldRole = Optional.of(session.get(Role.class, id)).orElseThrow(() -> new RepositoryException("There is no Role with following id"));
+                setNewRole(role, oldRole);
+                session.merge(oldRole);
                 transaction.commit();
             } catch (HibernateException e) {
                 session.getTransaction().rollback();
@@ -86,6 +87,11 @@ public class RoleRepositoryImpl implements RoleRepository {
                 throw new RepositoryException("There was an exception during deleting Role");
             }
         }
+    }
+
+    private static void setNewRole(Role role, Role oldRole) {
+        oldRole.setName(role.getName());
+        oldRole.setUsers(role.getUsers());
     }
 
 }

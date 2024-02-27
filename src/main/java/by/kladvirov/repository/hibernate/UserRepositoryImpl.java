@@ -63,8 +63,9 @@ public class UserRepositoryImpl implements UserRepository {
         try (Session session = sessionFactory.openSession()) {
             try {
                 Transaction transaction = session.beginTransaction();
-                user.setId(id);
-                session.merge(user);
+                User oldUser = Optional.of(session.get(User.class, id)).orElseThrow(() -> new RepositoryException("There is no user with following id"));
+                setNewUser(user, oldUser);
+                session.merge(oldUser);
                 transaction.commit();
             } catch (HibernateException e) {
                 session.getTransaction().rollback();
@@ -86,6 +87,17 @@ public class UserRepositoryImpl implements UserRepository {
                 throw new RepositoryException("There was an exception during deleting User");
             }
         }
+    }
+
+    private static void setNewUser(User user, User oldUser) {
+        oldUser.setName(user.getName());
+        oldUser.setSurname(user.getSurname());
+        oldUser.setBirthDate(user.getBirthDate());
+        oldUser.setLogin(user.getLogin());
+        oldUser.setPassword(user.getPassword());
+        oldUser.setIsBlocked(user.getIsBlocked());
+        oldUser.setOrders(user.getOrders());
+        oldUser.setRoles(user.getRoles());
     }
 
 }
