@@ -1,18 +1,21 @@
 package by.kladvirov.repository.hibernate;
 
-import by.kladvirov.model.Role;
-import lombok.RequiredArgsConstructor;
 import by.kladvirov.exception.RepositoryException;
+import by.kladvirov.model.Role;
 import by.kladvirov.repository.RoleRepository;
+import lombok.RequiredArgsConstructor;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
+@Repository
 public class RoleRepositoryImpl implements RoleRepository {
 
     private final SessionFactory sessionFactory;
@@ -20,9 +23,9 @@ public class RoleRepositoryImpl implements RoleRepository {
     private static final String FIND_ALL_QUERY = "FROM Role";
 
     @Override
-    public Role findById(Long id) {
+    public Optional<Role> findById(Long id) {
         try (Session session = sessionFactory.openSession()) {
-            return session.get(Role.class, id);
+            return Optional.of(session.get(Role.class, id));
         } catch (HibernateException e) {
             throw new RepositoryException("There was an exception during finding Role by id");
         }
@@ -56,11 +59,14 @@ public class RoleRepositoryImpl implements RoleRepository {
     }
 
     @Override
-    public void update(Role role) {
+    public void update(Long id, Role role) {
         try (Session session = sessionFactory.openSession()) {
             try {
                 Transaction transaction = session.beginTransaction();
-                session.merge(role);
+                Role oldRole = Optional.of(session.get(Role.class, id))
+                        .orElseThrow(() -> new RepositoryException("There is no Role with following id"));
+                updateRole(role, oldRole);
+                session.merge(oldRole);
                 transaction.commit();
             } catch (HibernateException e) {
                 session.getTransaction().rollback();
@@ -82,6 +88,11 @@ public class RoleRepositoryImpl implements RoleRepository {
                 throw new RepositoryException("There was an exception during deleting Role");
             }
         }
+    }
+
+    private void updateRole(Role role, Role oldRole) {
+        oldRole.setName(role.getName());
+        oldRole.setUsers(role.getUsers());
     }
 
 }

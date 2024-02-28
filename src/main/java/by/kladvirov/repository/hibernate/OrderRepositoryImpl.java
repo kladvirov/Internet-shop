@@ -1,18 +1,21 @@
 package by.kladvirov.repository.hibernate;
 
-import by.kladvirov.model.Order;
-import lombok.RequiredArgsConstructor;
 import by.kladvirov.exception.RepositoryException;
+import by.kladvirov.model.Order;
 import by.kladvirov.repository.OrderRepository;
+import lombok.RequiredArgsConstructor;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
+@Repository
 public class OrderRepositoryImpl implements OrderRepository {
 
     private final SessionFactory sessionFactory;
@@ -20,9 +23,9 @@ public class OrderRepositoryImpl implements OrderRepository {
     private static final String FIND_ALL_QUERY = "from Order order left join fetch order.goods";
 
     @Override
-    public Order findById(Long id) {
+    public Optional<Order> findById(Long id) {
         try (Session session = sessionFactory.openSession()) {
-            return session.get(Order.class, id);
+            return Optional.of(session.get(Order.class, id));
         } catch (HibernateException e) {
             throw new RepositoryException("There was an exception during finding Order by id");
         }
@@ -56,11 +59,14 @@ public class OrderRepositoryImpl implements OrderRepository {
     }
 
     @Override
-    public void update(Order order) {
+    public void update(Long id, Order order) {
         try (Session session = sessionFactory.openSession()) {
             try {
                 Transaction transaction = session.beginTransaction();
-                session.merge(order);
+                Order oldOrder = Optional.of(session.get(Order.class, id))
+                        .orElseThrow(() -> new RepositoryException("There is no Order with following id"));
+                updateOrder(order, oldOrder);
+                session.merge(oldOrder);
                 transaction.commit();
             } catch (HibernateException e) {
                 session.getTransaction().rollback();
@@ -82,6 +88,13 @@ public class OrderRepositoryImpl implements OrderRepository {
                 throw new RepositoryException("There was an exception during saving Good");
             }
         }
+    }
+
+    private void updateOrder(Order order, Order oldOrder) {
+        oldOrder.setStatus(order.getStatus());
+        oldOrder.setOrderDate(order.getOrderDate());
+        oldOrder.setUser(order.getUser());
+        oldOrder.setGoods(order.getGoods());
     }
 
 }

@@ -1,18 +1,21 @@
 package by.kladvirov.repository.hibernate;
 
-import by.kladvirov.model.Good;
-import lombok.RequiredArgsConstructor;
 import by.kladvirov.exception.RepositoryException;
+import by.kladvirov.model.Good;
 import by.kladvirov.repository.GoodRepository;
+import lombok.RequiredArgsConstructor;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
+@Repository
 public class GoodRepositoryImpl implements GoodRepository {
 
     private final SessionFactory sessionFactory;
@@ -20,9 +23,9 @@ public class GoodRepositoryImpl implements GoodRepository {
     private static final String FIND_ALL_QUERY = "FROM Good";
 
     @Override
-    public Good findById(Long id) {
+    public Optional<Good> findById(Long id) {
         try (Session session = sessionFactory.openSession()) {
-            return session.get(Good.class, id);
+            return Optional.of(session.get(Good.class, id));
         } catch (HibernateException e) {
             throw new RepositoryException("There was an exception during finding Good by id");
         }
@@ -56,11 +59,14 @@ public class GoodRepositoryImpl implements GoodRepository {
     }
 
     @Override
-    public void update(Good good) {
+    public void update(Long id, Good good) {
         try (Session session = sessionFactory.openSession()) {
             try {
                 Transaction transaction = session.beginTransaction();
-                session.merge(good);
+                Good oldGood = Optional.of(session.get(Good.class, id))
+                        .orElseThrow(() -> new RepositoryException("There is no Order with following id"));
+                updateGood(good, oldGood);
+                session.merge(oldGood);
                 transaction.commit();
             } catch (HibernateException e) {
                 session.getTransaction().rollback();
@@ -82,6 +88,15 @@ public class GoodRepositoryImpl implements GoodRepository {
                 throw new RepositoryException("There was an exception during deleting Good");
             }
         }
+    }
+
+    private void updateGood(Good good, Good oldGood) {
+        oldGood.setName(good.getName());
+        oldGood.setPrice(good.getPrice());
+        oldGood.setExpirationDate(good.getExpirationDate());
+        oldGood.setCreateDate(good.getCreateDate());
+        oldGood.setIsAvailable(good.getIsAvailable());
+        oldGood.setOrders(good.getOrders());
     }
 
 }

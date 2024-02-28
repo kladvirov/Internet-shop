@@ -1,18 +1,21 @@
 package by.kladvirov.repository.hibernate;
 
-import by.kladvirov.model.User;
-import lombok.RequiredArgsConstructor;
 import by.kladvirov.exception.RepositoryException;
+import by.kladvirov.model.User;
 import by.kladvirov.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
+@Repository
 public class UserRepositoryImpl implements UserRepository {
 
     private final SessionFactory sessionFactory;
@@ -20,9 +23,9 @@ public class UserRepositoryImpl implements UserRepository {
     private static final String FIND_ALL_QUERY = "FROM User";
 
     @Override
-    public User findById(Long id) {
+    public Optional<User> findById(Long id) {
         try (Session session = sessionFactory.openSession()) {
-            return session.get(User.class, id);
+            return Optional.of(session.get(User.class, id));
         } catch (HibernateException e) {
             throw new RepositoryException("There was an exception during finding User by id");
         }
@@ -56,11 +59,14 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public void update(User user) {
+    public void update(Long id, User user) {
         try (Session session = sessionFactory.openSession()) {
             try {
                 Transaction transaction = session.beginTransaction();
-                session.merge(user);
+                User oldUser = Optional.of(session.get(User.class, id))
+                        .orElseThrow(() -> new RepositoryException("There is no user with following id"));
+                updateUser(user, oldUser);
+                session.merge(oldUser);
                 transaction.commit();
             } catch (HibernateException e) {
                 session.getTransaction().rollback();
@@ -82,6 +88,17 @@ public class UserRepositoryImpl implements UserRepository {
                 throw new RepositoryException("There was an exception during deleting User");
             }
         }
+    }
+
+    private void updateUser(User user, User oldUser) {
+        oldUser.setName(user.getName());
+        oldUser.setSurname(user.getSurname());
+        oldUser.setBirthDate(user.getBirthDate());
+        oldUser.setLogin(user.getLogin());
+        oldUser.setPassword(user.getPassword());
+        oldUser.setIsBlocked(user.getIsBlocked());
+        oldUser.setOrders(user.getOrders());
+        oldUser.setRoles(user.getRoles());
     }
 
 }

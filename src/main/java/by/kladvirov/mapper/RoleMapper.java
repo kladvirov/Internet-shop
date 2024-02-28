@@ -4,10 +4,11 @@ import by.kladvirov.dto.RoleCreationDto;
 import by.kladvirov.dto.RoleDto;
 import by.kladvirov.model.Role;
 import org.mapstruct.Mapper;
+import org.mapstruct.ReportingPolicy;
 
 import java.util.List;
 
-@Mapper
+@Mapper(componentModel = "SPRING", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface RoleMapper {
 
     Role toEntity(RoleCreationDto roleDto);
