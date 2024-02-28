@@ -23,7 +23,6 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(ServiceException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<ErrorResponse> handleServiceException(ServiceException ex, HttpServletRequest request) {
         return buildErrorResponse(ex, ex.getHttpStatus(), request);
     }
@@ -41,12 +40,8 @@ public class GlobalExceptionHandler {
     }
 
     private ResponseEntity<ErrorResponse> buildErrorResponse(Exception ex, HttpStatus status, HttpServletRequest request) {
-        ErrorResponse errorResponse = new ErrorResponse(ex.getMessage(), status.value(), LocalDateTime.now(), getRequestURL(request));
+        ErrorResponse errorResponse = new ErrorResponse(ex.getMessage(), status.value(), LocalDateTime.now(), request.getRequestURI());
         return new ResponseEntity<>(errorResponse, status);
-    }
-
-    private String getRequestURL(HttpServletRequest request) {
-        return request.getRequestURI();
     }
 
 }
