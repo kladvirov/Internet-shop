@@ -63,8 +63,9 @@ public class GoodRepositoryImpl implements GoodRepository {
         try (Session session = sessionFactory.openSession()) {
             try {
                 Transaction transaction = session.beginTransaction();
-                Good oldGood = Optional.of(session.get(Good.class, id)).orElseThrow(() -> new RepositoryException("There is no Order with following id"));
-                setNewGood(good, oldGood);
+                Good oldGood = Optional.of(session.get(Good.class, id))
+                        .orElseThrow(() -> new RepositoryException("There is no Order with following id"));
+                updateGood(good, oldGood);
                 session.merge(oldGood);
                 transaction.commit();
             } catch (HibernateException e) {
@@ -89,7 +90,7 @@ public class GoodRepositoryImpl implements GoodRepository {
         }
     }
 
-    private static void setNewGood(Good good, Good oldGood) {
+    private void updateGood(Good good, Good oldGood) {
         oldGood.setName(good.getName());
         oldGood.setPrice(good.getPrice());
         oldGood.setExpirationDate(good.getExpirationDate());

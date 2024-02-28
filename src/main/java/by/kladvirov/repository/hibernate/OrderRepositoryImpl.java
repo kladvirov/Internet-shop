@@ -63,8 +63,9 @@ public class OrderRepositoryImpl implements OrderRepository {
         try (Session session = sessionFactory.openSession()) {
             try {
                 Transaction transaction = session.beginTransaction();
-                Order oldOrder = Optional.of(session.get(Order.class, id)).orElseThrow(() -> new RepositoryException("There is no Order with following id"));
-                setNewOrder(order, oldOrder);
+                Order oldOrder = Optional.of(session.get(Order.class, id))
+                        .orElseThrow(() -> new RepositoryException("There is no Order with following id"));
+                updateOrder(order, oldOrder);
                 session.merge(oldOrder);
                 transaction.commit();
             } catch (HibernateException e) {
@@ -89,7 +90,7 @@ public class OrderRepositoryImpl implements OrderRepository {
         }
     }
 
-    private static void setNewOrder(Order order, Order oldOrder) {
+    private void updateOrder(Order order, Order oldOrder) {
         oldOrder.setStatus(order.getStatus());
         oldOrder.setOrderDate(order.getOrderDate());
         oldOrder.setUser(order.getUser());

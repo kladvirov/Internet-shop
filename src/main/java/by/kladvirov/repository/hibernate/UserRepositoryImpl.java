@@ -63,8 +63,9 @@ public class UserRepositoryImpl implements UserRepository {
         try (Session session = sessionFactory.openSession()) {
             try {
                 Transaction transaction = session.beginTransaction();
-                User oldUser = Optional.of(session.get(User.class, id)).orElseThrow(() -> new RepositoryException("There is no user with following id"));
-                setNewUser(user, oldUser);
+                User oldUser = Optional.of(session.get(User.class, id))
+                        .orElseThrow(() -> new RepositoryException("There is no user with following id"));
+                updateUser(user, oldUser);
                 session.merge(oldUser);
                 transaction.commit();
             } catch (HibernateException e) {
@@ -89,7 +90,7 @@ public class UserRepositoryImpl implements UserRepository {
         }
     }
 
-    private static void setNewUser(User user, User oldUser) {
+    private void updateUser(User user, User oldUser) {
         oldUser.setName(user.getName());
         oldUser.setSurname(user.getSurname());
         oldUser.setBirthDate(user.getBirthDate());
