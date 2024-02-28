@@ -32,8 +32,8 @@ public class RoleController {
     }
 
     @GetMapping
-    public ResponseEntity<List<RoleDto>> getAllRoles(@RequestParam(value = "size", required = false, defaultValue = "10") int size,
-                                     @RequestParam(value = "page", required = false, defaultValue = "0") int page) {
+    public ResponseEntity<List<RoleDto>> getAllRoles(@RequestParam(value = "size", defaultValue = "10") int size,
+                                     @RequestParam(value = "page", defaultValue = "0") int page) {
         return new ResponseEntity<>(roleService.findAll(size, page), HttpStatus.OK);
     }
 

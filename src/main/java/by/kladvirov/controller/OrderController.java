@@ -32,8 +32,8 @@ public class OrderController {
     }
 
     @GetMapping
-    public ResponseEntity<List<OrderDto>> getAllRoles(@RequestParam(value = "size", required = false, defaultValue = "10") int size,
-                                     @RequestParam(value = "page", required = false, defaultValue = "0") int page) {
+    public ResponseEntity<List<OrderDto>> getAllRoles(@RequestParam(value = "size", defaultValue = "10") int size,
+                                     @RequestParam(value = "page", defaultValue = "0") int page) {
         return new ResponseEntity<>(orderService.findAll(size, page), HttpStatus.OK);
     }
 

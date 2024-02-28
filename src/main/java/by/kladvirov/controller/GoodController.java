@@ -33,8 +33,8 @@ public class GoodController {
     }
 
     @GetMapping
-    public ResponseEntity<List<GoodDto>> getAllGoods(@RequestParam(value = "size", required = false, defaultValue = "10") int size,
-                                     @RequestParam(value = "page", required = false, defaultValue = "0") int page) {
+    public ResponseEntity<List<GoodDto>> getAllGoods(@RequestParam(value = "size", defaultValue = "10") int size,
+                                     @RequestParam(value = "page", defaultValue = "0") int page) {
         return new ResponseEntity<>(goodService.findAll(size, page), HttpStatus.OK);
     }
 
