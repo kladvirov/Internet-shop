@@ -1,8 +1,6 @@
-package by.kladvirov.exceptionhandler;
+package by.kladvirov.exception.handler;
 
-import by.kladvirov.exception.RepositoryException;
 import by.kladvirov.exception.ServiceException;
-import by.kladvirov.exceptionhandler.model.ErrorResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ValidationException;
 import org.springframework.http.HttpStatus;
@@ -25,12 +23,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ServiceException.class)
     public ResponseEntity<ErrorResponse> handleServiceException(ServiceException ex, HttpServletRequest request) {
         return buildErrorResponse(ex, ex.getHttpStatus(), request);
-    }
-
-    @ExceptionHandler(RepositoryException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseEntity<ErrorResponse> handleRepositoryException(RepositoryException ex, HttpServletRequest request) {
-        return buildErrorResponse(ex, HttpStatus.BAD_REQUEST, request);
     }
 
     @ExceptionHandler(ValidationException.class)
