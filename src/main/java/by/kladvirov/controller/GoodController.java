@@ -6,6 +6,8 @@ import by.kladvirov.dto.GoodUpdateDto;
 import by.kladvirov.service.GoodService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,30 +28,32 @@ public class GoodController {
     private final GoodService goodService;
 
     @GetMapping("/{id}")
-    public GoodDto getById(@PathVariable("id") Long id) {
-        return goodService.findById(id);
+    public ResponseEntity<GoodDto> getById(@PathVariable("id") Long id) {
+        return new ResponseEntity<>(goodService.findById(id), HttpStatus.OK);
     }
 
-    @GetMapping()
-    public List<GoodDto> getAllGoods(@RequestParam(value = "size", required = false, defaultValue = "10") int size,
+    @GetMapping
+    public ResponseEntity<List<GoodDto>> getAllGoods(@RequestParam(value = "size", required = false, defaultValue = "10") int size,
                                      @RequestParam(value = "page", required = false, defaultValue = "0") int page) {
-        return goodService.findAll(size, page);
+        return new ResponseEntity<>(goodService.findAll(size, page), HttpStatus.OK);
     }
 
 
-    @PostMapping()
-    public GoodDto createGood(@RequestBody @Valid GoodCreationDto goodCreationDto) {
-        return goodService.save(goodCreationDto);
+    @PostMapping
+    public ResponseEntity<GoodDto> createGood(@RequestBody @Valid GoodCreationDto goodCreationDto) {
+        return new ResponseEntity<>(goodService.save(goodCreationDto), HttpStatus.CREATED);
     }
 
-    @PutMapping("{id}")
-    public void update(@PathVariable("id") Long id, @RequestBody @Valid GoodUpdateDto goodUpdateDto) {
+    @PutMapping("/{id}")
+    public ResponseEntity<HttpStatus> update(@PathVariable("id") Long id, @RequestBody @Valid GoodUpdateDto goodUpdateDto) {
         goodService.update(id, goodUpdateDto);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @DeleteMapping("{id}")
-    public void deleteById(@PathVariable("id") Long id) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<HttpStatus> deleteById(@PathVariable("id") Long id) {
         goodService.delete(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }

@@ -5,6 +5,8 @@ import by.kladvirov.dto.OrderDto;
 import by.kladvirov.service.OrderService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,30 +27,32 @@ public class OrderController {
     private final OrderService orderService;
 
     @GetMapping("/{id}")
-    public OrderDto getById(@PathVariable("id") Long id) {
-        return orderService.findById(id);
+    public ResponseEntity<OrderDto> getById(@PathVariable("id") Long id) {
+        return new ResponseEntity<>(orderService.findById(id), HttpStatus.OK);
     }
 
-    @GetMapping()
-    public List<OrderDto> getAllRoles(@RequestParam(value = "size", required = false, defaultValue = "10") int size,
+    @GetMapping
+    public ResponseEntity<List<OrderDto>> getAllRoles(@RequestParam(value = "size", required = false, defaultValue = "10") int size,
                                      @RequestParam(value = "page", required = false, defaultValue = "0") int page) {
-        return orderService.findAll(size, page);
+        return new ResponseEntity<>(orderService.findAll(size, page), HttpStatus.OK);
     }
 
 
-    @PostMapping()
-    public OrderDto createRole(@RequestBody @Valid OrderCreationDto orderCreationDto) {
-        return orderService.save(orderCreationDto);
+    @PostMapping
+    public ResponseEntity<OrderDto> createRole(@RequestBody @Valid OrderCreationDto orderCreationDto) {
+        return new ResponseEntity<>(orderService.save(orderCreationDto), HttpStatus.CREATED);
     }
 
-    @PutMapping("{id}")
-    public void update(@PathVariable("id") Long id, @RequestBody @Valid OrderCreationDto orderCreationDto) {
+    @PutMapping("/{id}")
+    public ResponseEntity<HttpStatus> update(@PathVariable("id") Long id, @RequestBody @Valid OrderCreationDto orderCreationDto) {
         orderService.update(id, orderCreationDto);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @DeleteMapping("{id}")
-    public void deleteById(@PathVariable("id") Long id) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<HttpStatus> deleteById(@PathVariable("id") Long id) {
         orderService.delete(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }

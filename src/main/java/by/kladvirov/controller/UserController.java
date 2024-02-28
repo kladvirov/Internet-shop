@@ -27,28 +27,29 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/{id}")
-    public UserDto getById(@PathVariable("id") Long id) {
-        return userService.findById(id);
+    public ResponseEntity<UserDto> getById(@PathVariable("id") Long id) {
+        return new ResponseEntity<>(userService.findById(id), HttpStatus.OK);
     }
 
-    @GetMapping()
-    public List<UserDto> getAllUsers(@RequestParam(value = "size", required = false, defaultValue = "10") int size,
-                                     @RequestParam(value = "page", required = false, defaultValue = "0") int page) {
-        return userService.findAll(size, page);
+    @GetMapping
+    public ResponseEntity<List<UserDto>> getAllUsers(@RequestParam(value = "size", defaultValue = "10") int size,
+                                     @RequestParam(value = "page", defaultValue = "0") int page) {
+        return new ResponseEntity<>(userService.findAll(size, page), HttpStatus.OK);
     }
 
 
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<UserDto> createUser(@RequestBody @Valid UserCreationDto userCreationDto) {
         return new ResponseEntity<>(userService.save(userCreationDto), HttpStatus.CREATED);
     }
 
-    @PutMapping("{id}")
-    public void update(@PathVariable("id") Long id, @RequestBody @Valid UserCreationDto userCreationDto) {
+    @PutMapping("/{id}")
+    public ResponseEntity<HttpStatus> update(@PathVariable("id") Long id, @RequestBody @Valid UserCreationDto userCreationDto) {
         userService.update(id, userCreationDto);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<HttpStatus> deleteById(@PathVariable("id") Long id) {
         userService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
