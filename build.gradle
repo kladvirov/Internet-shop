@@ -1,7 +1,9 @@
 plugins {
     id 'java'
-    id 'war'
+    id 'org.springframework.boot' version '3.2.3'
 }
+
+apply plugin: 'io.spring.dependency-management'
 
 group = 'by.kladvirov'
 version = '1.0.0'
@@ -11,17 +13,14 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.postgresql:postgresql:42.7.1'
-    implementation 'org.hibernate:hibernate-core:6.4.2.Final'
+    implementation 'org.postgresql:postgresql:42.7.2'
     compileOnly 'org.projectlombok:lombok:1.18.30'
     annotationProcessor 'org.projectlombok:lombok:1.18.30'
     implementation 'org.mapstruct:mapstruct:1.5.5.Final'
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
-    implementation 'jakarta.servlet:jakarta.servlet-api:6.0.0'
-    implementation 'com.fasterxml.jackson.core:jackson-databind:2.15.2'
-    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.15.2'
-    implementation 'org.springframework:spring-webmvc:6.1.4'
     implementation 'org.hibernate.validator:hibernate-validator:8.0.1.Final'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 }
 
 test {
