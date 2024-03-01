@@ -8,6 +8,7 @@ import by.kladvirov.mapper.RoleMapper;
 import by.kladvirov.model.Role;
 import by.kladvirov.repository.RoleRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -26,9 +27,9 @@ public class RoleService {
         return roleMapper.toDto(role);
     }
 
-    public List<RoleDto> findAll(int size, int page) {
+    public List<RoleDto> findAll(Pageable pageable) {
         try {
-            return roleMapper.toDto(roleRepository.findAll(size, page));
+            return roleMapper.toDto(roleRepository.findAll(pageable).toList());
         } catch (RepositoryException ex) {
             throw new ServiceException("Error during finding all roles", HttpStatus.BAD_REQUEST);
         }
@@ -45,7 +46,9 @@ public class RoleService {
 
     public void update(Long id, RoleCreationDto roleDto) {
         try {
-            roleRepository.update(id, roleMapper.toEntity(roleDto));
+            Role role = roleRepository.findById(id).orElseThrow(() -> new ServiceException("There is no such role", HttpStatus.NOT_FOUND));
+            Role mappedRole = roleMapper.toEntity(roleDto);
+            updateRole(role, mappedRole);
         } catch (RepositoryException ex) {
             throw new ServiceException("Error during updating role", HttpStatus.BAD_REQUEST);
         }
@@ -53,10 +56,14 @@ public class RoleService {
 
     public void delete(Long id) {
         try {
-            roleRepository.delete(id);
+            roleRepository.deleteById(id);
         } catch (RepositoryException ex) {
             throw new ServiceException("Error during deleting role", HttpStatus.BAD_REQUEST);
         }
+    }
+
+    private void updateRole(Role role, Role mappedRole) {
+        role.setName(mappedRole.getName());
     }
 
 }

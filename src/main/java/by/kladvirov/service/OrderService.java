@@ -8,6 +8,7 @@ import by.kladvirov.mapper.OrderMapper;
 import by.kladvirov.model.Order;
 import by.kladvirov.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -26,9 +27,9 @@ public class OrderService {
         return orderMapper.toDto(order);
     }
 
-    public List<OrderDto> findAll(int size, int page) {
+    public List<OrderDto> findAll(Pageable pageable) {
         try {
-            return orderMapper.toDto(orderRepository.findAll(size, page));
+            return orderMapper.toDto(orderRepository.findAll(pageable).toList());
         } catch (RepositoryException ex) {
             throw new ServiceException("Error during finding all orders", HttpStatus.BAD_REQUEST);
         }
@@ -45,7 +46,10 @@ public class OrderService {
 
     public void update(Long id, OrderCreationDto orderDto) {
         try {
-            orderRepository.update(id, orderMapper.toEntity(orderDto));
+            Order order = orderRepository.findById(id).orElseThrow(() -> new ServiceException("There is no such order", HttpStatus.NOT_FOUND));
+            Order mappedOrder = orderMapper.toEntity(orderDto);
+            updateOrder(order, mappedOrder);
+            orderRepository.save(order);
         } catch (RepositoryException ex) {
             throw new ServiceException("Error during updating order", HttpStatus.BAD_REQUEST);
         }
@@ -53,10 +57,15 @@ public class OrderService {
 
     public void delete(Long id) {
         try {
-            orderRepository.delete(id);
+            orderRepository.deleteById(id);
         } catch (RepositoryException ex) {
             throw new ServiceException("Error during finding all orders", HttpStatus.BAD_REQUEST);
         }
+    }
+
+    private void updateOrder(Order order, Order mappedOrder) {
+        order.setUser(mappedOrder.getUser());
+        order.setGoods(mappedOrder.getGoods());
     }
 
 }

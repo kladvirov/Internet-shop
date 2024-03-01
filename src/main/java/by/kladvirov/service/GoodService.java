@@ -9,6 +9,7 @@ import by.kladvirov.mapper.GoodMapper;
 import by.kladvirov.model.Good;
 import by.kladvirov.repository.GoodRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -27,9 +28,9 @@ public class GoodService {
         return goodMapper.toDto(good);
     }
 
-    public List<GoodDto> findAll(int size, int page) {
+    public List<GoodDto> findAll(Pageable pageable) {
         try {
-            return goodMapper.toDto(goodRepository.findAll(size, page));
+            return goodMapper.toDto(goodRepository.findAll(pageable).toList());
         } catch (RepositoryException ex) {
             throw new ServiceException("Error during finding all goods", HttpStatus.BAD_REQUEST);
         }
@@ -46,7 +47,10 @@ public class GoodService {
 
     public void update(Long id, GoodUpdateDto goodDto) {
         try {
-            goodRepository.update(id, goodMapper.toEntity(goodDto));
+            Good good = goodRepository.findById(id).orElseThrow(() -> new ServiceException("There is no such good", HttpStatus.NOT_FOUND));
+            Good mappedGood = goodMapper.toEntity(goodDto);
+            updateGood(good, mappedGood);
+            goodRepository.save(good);
         } catch (RepositoryException ex) {
             throw new ServiceException("Error during updating good", HttpStatus.BAD_REQUEST);
         }
@@ -54,10 +58,15 @@ public class GoodService {
 
     public void delete(Long id) {
         try {
-            goodRepository.delete(id);
+            goodRepository.deleteById(id);
         } catch (RepositoryException ex) {
             throw new ServiceException("Error during deleting good", HttpStatus.BAD_REQUEST);
         }
+    }
+
+    private void updateGood(Good good, Good mappedGood) {
+        good.setIsAvailable(mappedGood.getIsAvailable());
+        good.setPrice(mappedGood.getPrice());
     }
 
 }
