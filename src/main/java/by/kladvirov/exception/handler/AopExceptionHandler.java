@@ -8,8 +8,6 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -23,8 +21,6 @@ import java.util.Arrays;
 @Component
 @Slf4j
 public class AopExceptionHandler {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(AopExceptionHandler.class);
 
     @Around("@annotation(org.springframework.web.bind.annotation.RestController)")
     public Object handleExceptionInRestController(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
@@ -48,7 +44,7 @@ public class AopExceptionHandler {
     }
 
     private void logException(String methodName, String arguments, Exception ex) {
-        LOGGER.error("Caught exception in method: {} with args: {}. Exception: {}", methodName, arguments, ex.getMessage());
+        log.error("Caught exception in method: {} with args: {}. Exception: {}", methodName, arguments, ex.getMessage());
     }
 
     private ResponseEntity<ErrorResponse> buildErrorResponse(Exception ex, HttpStatus status, HttpServletRequest request) {
