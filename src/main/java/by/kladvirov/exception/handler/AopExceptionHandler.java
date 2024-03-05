@@ -3,10 +3,13 @@ package by.kladvirov.exception.handler;
 import by.kladvirov.exception.ServiceException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ValidationException;
+import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -16,15 +19,15 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 
-import static org.hibernate.sql.ast.SqlTreeCreationLogger.LOGGER;
-
 @Aspect
 @Component
+@Slf4j
 public class AopExceptionHandler {
 
-    @Around("@annotation(by.kladvirov.exception.handler.annotation.MyPointcut)")
-    public Object doRecoveryActions(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
+    private static final Logger LOGGER = LoggerFactory.getLogger(AopExceptionHandler.class);
 
+    @Around("@annotation(org.springframework.web.bind.annotation.RestController)")
+    public Object handleExceptionInRestController(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
         MethodSignature signature = (MethodSignature) proceedingJoinPoint.getSignature();
         String methodName = signature.getName();
         String arguments = Arrays.toString(proceedingJoinPoint.getArgs());
@@ -33,27 +36,23 @@ public class AopExceptionHandler {
         try {
             return proceedingJoinPoint.proceed();
         } catch (ValidationException ex) {
-            LogCall(methodName, arguments);
+            logException(methodName, arguments, ex);
             return buildErrorResponse(ex, HttpStatus.BAD_REQUEST, request);
         } catch (ServiceException ex) {
-            LogCall(methodName, arguments);
+            logException(methodName, arguments, ex);
             return buildErrorResponse(ex, ex.getHttpStatus(), request);
         } catch (Exception ex) {
-            LogCall(methodName, arguments);
+            logException(methodName, arguments, ex);
             return buildErrorResponse(ex, HttpStatus.BAD_REQUEST, request);
         }
+    }
+
+    private void logException(String methodName, String arguments, Exception ex) {
+        LOGGER.error("Caught exception in method: {} with args: {}. Exception: {}", methodName, arguments, ex.getMessage());
     }
 
     private ResponseEntity<ErrorResponse> buildErrorResponse(Exception ex, HttpStatus status, HttpServletRequest request) {
         ErrorResponse errorResponse = new ErrorResponse(ex.getMessage(), status.value(), LocalDateTime.now(), request.getRequestURI());
         return new ResponseEntity<>(errorResponse, status);
     }
-
-    private void LogCall(String methodName, String arguments) {
-        LOGGER.error("Caught exception in method: "
-                + methodName + " with args: "
-                + arguments + " the exception is: "
-        );
-    }
-
 }
