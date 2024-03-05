@@ -2,7 +2,6 @@ package by.kladvirov.controller;
 
 import by.kladvirov.dto.UserCreationDto;
 import by.kladvirov.dto.UserDto;
-import by.kladvirov.exception.handler.annotation.MyPointcut;
 import by.kladvirov.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -27,13 +26,11 @@ public class UserController {
 
     private final UserService userService;
 
-    @MyPointcut
     @GetMapping("/{id}")
     public ResponseEntity<UserDto> getById(@PathVariable("id") Long id) {
         return new ResponseEntity<>(userService.findById(id), HttpStatus.OK);
     }
 
-    @MyPointcut
     @GetMapping
     public ResponseEntity<List<UserDto>> getAllUsers(Pageable pageable) {
         return new ResponseEntity<>(userService.findAll(pageable), HttpStatus.OK);
