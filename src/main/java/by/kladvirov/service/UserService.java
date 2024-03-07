@@ -27,6 +27,12 @@ public class UserService {
         return userMapper.toDto(user);
     }
 
+    public UserCreationDto findByLogin(String login) {
+        User user = userRepository.findByLogin(login)
+                .orElseThrow(() -> new ServiceException("There is no such user with following login", HttpStatus.NOT_FOUND));
+        return userMapper.toCreationDto(user);
+    }
+
     public List<UserDto> findAll(Pageable pageable) {
         try {
             return userMapper.toDto(userRepository.findAll(pageable).toList());
