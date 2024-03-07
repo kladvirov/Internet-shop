@@ -17,11 +17,14 @@ public interface UserMapper {
 
     UserDto toDto(User user);
 
+    // need?
+    UserCreationDto toCreationDto(User user);
+
     List<UserDto> toDto(List<User> users);
 
     @AfterMapping
-    default void setBlockedToFalse(@MappingTarget User user) {
-        user.setIsBlocked(false);
+    default void setBlockedToFalse(@MappingTarget User.UserBuilder user) {
+        user.isBlocked(false);
     }
 
 }
