@@ -32,13 +32,13 @@ public class OrderController {
     }
 
     @GetMapping
-    public ResponseEntity<List<OrderDto>> getAllRoles(Pageable pageable) {
+    public ResponseEntity<List<OrderDto>> getAllOrders(Pageable pageable) {
         return new ResponseEntity<>(orderService.findAll(pageable), HttpStatus.OK);
     }
 
 
     @PostMapping
-    public ResponseEntity<OrderDto> createRole(@RequestBody @Valid OrderCreationDto orderCreationDto) {
+    public ResponseEntity<OrderDto> createOrder(@RequestBody @Valid OrderCreationDto orderCreationDto) {
         return new ResponseEntity<>(orderService.save(orderCreationDto), HttpStatus.CREATED);
     }
 
