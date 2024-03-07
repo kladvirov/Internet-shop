@@ -1,8 +1,9 @@
 package by.kladvirov.security.auth;
 
-import by.kladvirov.model.User;
-import by.kladvirov.repository.UserRepository;
+import by.kladvirov.dto.UserCreationDto;
+import by.kladvirov.mapper.UserMapper;
 import by.kladvirov.security.JwtService;
+import by.kladvirov.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -13,9 +14,11 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class AuthenticationService {
 
-    private final UserRepository userRepository;
+    private final UserService userService;
 
     private final PasswordEncoder passwordEncoder;
+
+    private final UserMapper userMapper;
 
     private final JwtService jwtService;
 
@@ -23,23 +26,24 @@ public class AuthenticationService {
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {
         manager.authenticate(new UsernamePasswordAuthenticationToken(request.getLogin(), request.getPassword()));
-        var user = userRepository.findByLogin(request.getLogin())
-                .orElseThrow();
-        var jwtToken = jwtService.generateToken(user);
+        UserCreationDto user = userService.findByLogin(request.getLogin());
+        String jwtToken = jwtService.generateToken(userMapper.toEntity(user));
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .build();
     }
 
-    public AuthenticationResponse register(RegisterRequest request) {
-        var user = User.builder()
+    public AuthenticationResponse register(UserCreationDto request) {
+        UserCreationDto user = UserCreationDto.builder()
                 .name(request.getName())
                 .surname(request.getSurname())
                 .login(request.getLogin())
                 .password(passwordEncoder.encode(request.getPassword()))
+                .birthDate(request.getBirthDate())
+                .roleIds(request.getRoleIds())
                 .build();
-        userRepository.save(user);
-        var jwtToken = jwtService.generateToken(user);
+        userService.save(user);
+        String jwtToken = jwtService.generateToken(userMapper.toEntity(user));
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .build();
