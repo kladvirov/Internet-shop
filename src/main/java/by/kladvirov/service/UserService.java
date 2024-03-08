@@ -23,7 +23,7 @@ public class UserService {
     private final UserMapper userMapper;
 
     public UserDto findById(Long id) {
-        User user = userRepository.findById(id).orElseThrow(() -> new ServiceException("There is no such user", HttpStatus.NOT_FOUND));
+        User user = userRepository.findUserById(id).orElseThrow(() -> new ServiceException("There is no such user", HttpStatus.NOT_FOUND));
         return userMapper.toDto(user);
     }
 
@@ -35,7 +35,7 @@ public class UserService {
 
     public List<UserDto> findAll(Pageable pageable) {
         try {
-            return userMapper.toDto(userRepository.findAll(pageable).toList());
+            return userMapper.toDto(userRepository.findAllUsers(pageable));
         } catch (RepositoryException ex) {
             throw new ServiceException("Error during finding all users", HttpStatus.BAD_REQUEST);
         }
