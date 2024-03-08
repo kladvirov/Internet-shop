@@ -32,13 +32,13 @@ public class AuthorityController {
     }
 
     @GetMapping
-    public ResponseEntity<List<AuthorityDto>> getAllGoods(Pageable pageable) {
+    public ResponseEntity<List<AuthorityDto>> getAllAuthorities(Pageable pageable) {
         return new ResponseEntity<>(authorityService.findAll(pageable), HttpStatus.OK);
     }
 
 
     @PostMapping
-    public ResponseEntity<AuthorityDto> createGood(@RequestBody @Valid AuthorityCreationDto authorityCreationDto) {
+    public ResponseEntity<AuthorityDto> createAuthority(@RequestBody @Valid AuthorityCreationDto authorityCreationDto) {
         return new ResponseEntity<>(authorityService.save(authorityCreationDto), HttpStatus.CREATED);
     }
 
