@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,28 +28,33 @@ public class OrderController {
     private final OrderService orderService;
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority('READ_ORDERS')")
     public ResponseEntity<OrderDto> getById(@PathVariable("id") Long id) {
         return new ResponseEntity<>(orderService.findById(id), HttpStatus.OK);
     }
 
     @GetMapping
+    @PreAuthorize("hasAuthority('READ_ORDERS')")
     public ResponseEntity<List<OrderDto>> getAllOrders(Pageable pageable) {
         return new ResponseEntity<>(orderService.findAll(pageable), HttpStatus.OK);
     }
 
 
     @PostMapping
+    @PreAuthorize("hasAuthority('CREATE_ORDERS')")
     public ResponseEntity<OrderDto> createOrder(@RequestBody @Valid OrderCreationDto orderCreationDto) {
         return new ResponseEntity<>(orderService.save(orderCreationDto), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('UPDATE_ORDERS')")
     public ResponseEntity<HttpStatus> update(@PathVariable("id") Long id, @RequestBody @Valid OrderCreationDto orderCreationDto) {
         orderService.update(id, orderCreationDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('DELETE_ORDERS')")
     public ResponseEntity<HttpStatus> deleteById(@PathVariable("id") Long id) {
         orderService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

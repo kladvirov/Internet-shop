@@ -23,6 +23,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/users")
+@PreAuthorize("hasRole('ADMIN')")
 public class UserController {
 
     private final UserService userService;
@@ -33,7 +34,6 @@ public class UserController {
     }
 
     @GetMapping
-    @PreAuthorize("hasAuthority('READ_USERS')")
     public ResponseEntity<List<UserDto>> getAllUsers(Pageable pageable) {
         return new ResponseEntity<>(userService.findAll(pageable), HttpStatus.OK);
     }
