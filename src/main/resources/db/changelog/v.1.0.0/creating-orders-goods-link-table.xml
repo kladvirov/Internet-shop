@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="15" author="wladponomar@gmail.com">
+        <createTable tableName="orders_goods_link">
+            <column name="order_id" type="int8">
+                <constraints nullable="false"/>
+            </column>
+            <column name="good_id" type="int8">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="16" author="wladponomar@gmail.com">
+        <sql>
+            ALTER TABLE orders_goods_link
+                ADD CONSTRAINT orders_goods_link_order_id_fkey FOREIGN KEY (order_id) REFERENCES orders (id);
+            ALTER TABLE orders_goods_link
+                ADD CONSTRAINT orders_goods_link_good_id_fkey FOREIGN KEY (good_id) REFERENCES goods (id);
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

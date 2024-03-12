@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="2" author="wladponomar@gmail.com">
+        <comment>Inserting data in authority table</comment>
+        <sql>
+            INSERT INTO authorities (name)
+            VALUES ('READ_USERS'),
+                   ('CREATE_USERS'),
+                   ('UPDATE_USERS'),
+                   ('DELETE_USERS'),
+                   ('READ_GOODS'),
+                   ('CREATE_GOODS'),
+                   ('UPDATE_GOODS'),
+                   ('DELETE_GOODS'),
+                   ('READ_ROLES'),
+                   ('CREATE_ROLES'),
+                   ('UPDATE_ROLES'),
+                   ('DELETE_ROLES'),
+                   ('READ_ORDERS'),
+                   ('CREATE_ORDERS'),
+                   ('UPDATE_ORDERS'),
+                   ('DELETE_ORDERS'),
+                   ('READ_AUTHORITIES'),
+                   ('CREATE_AUTHORITIES'),
+                   ('UPDATE_AUTHORITIES'),
+                   ('DELETE_AUTHORITIES')
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>
