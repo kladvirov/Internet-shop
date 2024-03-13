@@ -4,12 +4,18 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
    http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 
-    <include file="creating-roles-table.xml" relativeToChangelogFile="true"/>
-    <include file="creating-authorities-table.xml" relativeToChangelogFile="true"/>
-    <include file="creating-goods-table.xml" relativeToChangelogFile="true"/>
-    <include file="creating-users-table.xml" relativeToChangelogFile="true"/>
-    <include file="creating-orders-table.xml" relativeToChangelogFile="true"/>
-    <include file="creating-users-roles-link-table.xml" relativeToChangelogFile="true"/>
-    <include file="creating-authorities-roles-link-table.xml" relativeToChangelogFile="true"/>
-    <include file="creating-orders-goods-link-table.xml" relativeToChangelogFile="true"/>
+    <include file="create-roles-table.xml" relativeToChangelogFile="true"/>
+    <include file="create-authorities-table.xml" relativeToChangelogFile="true"/>
+    <include file="create-goods-table.xml" relativeToChangelogFile="true"/>
+    <include file="create-users-table.xml" relativeToChangelogFile="true"/>
+    <include file="create-orders-table.xml" relativeToChangelogFile="true"/>
+    <include file="create-users-roles-link-table.xml" relativeToChangelogFile="true"/>
+    <include file="create-authorities-roles-link-table.xml" relativeToChangelogFile="true"/>
+    <include file="create-orders-goods-link-table.xml" relativeToChangelogFile="true"/>
+    <include file="fill-roles-table.xml" relativeToChangelogFile="true"/>
+    <include file="fill-authorities-table.xml" relativeToChangelogFile="true"/>
+    <include file="fill-users-table.xml" relativeToChangelogFile="true"/>
+    <include file="fill-goods-table.xml" relativeToChangelogFile="true"/>
+    <include file="fill-orders-table.xml" relativeToChangelogFile="true"/>
+    <include file="fill-authorities-roles-link-table.xml" relativeToChangelogFile="true"/>
 </databaseChangeLog>
