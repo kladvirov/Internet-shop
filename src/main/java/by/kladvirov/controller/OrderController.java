@@ -35,7 +35,7 @@ public class OrderController {
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority('READ_ORDERS')")
-    @Operation(summary = "Get role by id")
+    @Operation(summary = "Get order by id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK"),
             @ApiResponse(responseCode = "404", description = "Order not found"),
