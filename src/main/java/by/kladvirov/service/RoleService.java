@@ -49,6 +49,7 @@ public class RoleService {
             Role role = roleRepository.findById(id).orElseThrow(() -> new ServiceException("There is no such role", HttpStatus.NOT_FOUND));
             Role mappedRole = roleMapper.toEntity(roleDto);
             updateRole(role, mappedRole);
+            roleRepository.save(role);
         } catch (RepositoryException ex) {
             throw new ServiceException("Error during updating role", HttpStatus.BAD_REQUEST);
         }
