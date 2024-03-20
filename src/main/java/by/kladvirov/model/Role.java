@@ -26,6 +26,7 @@ import java.util.Set;
 @Builder
 @Entity
 @Table(name = "roles")
+@EqualsAndHashCode
 public class Role {
 
     @Id
