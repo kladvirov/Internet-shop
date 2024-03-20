@@ -41,8 +41,7 @@ public class RoleServiceTest {
     private RoleService roleService;
 
     @Test
-    void findById_ReturnsRoleDto() {
-
+    void findByIdTest_shouldReturnRoleDto() {
         Long id = 1L;
         RoleDto expected = RoleDto.builder().id(id).name("ADMIN").build();
 
@@ -56,15 +55,13 @@ public class RoleServiceTest {
                 }})
                 .name("ADMIN")
                 .build()));
-
         RoleDto actual = roleService.findById(id);
 
         Assertions.assertEquals(expected, actual);
     }
 
     @Test
-    void findAll_ReturnsListOfRoleDto() {
-
+    void findAllTest_shouldReturnListOfRoleDto() {
         Pageable pageable = PageRequest.of(0, 3);
 
         List<RoleDto> expected = new ArrayList<>() {{
@@ -72,7 +69,7 @@ public class RoleServiceTest {
             add(RoleDto.builder().id(2L).build());
             add(RoleDto.builder().id(3L).build());
         }};
-        List<Role> roles = new ArrayList<>(){{
+        List<Role> roles = new ArrayList<>() {{
             add(Role.builder().id(1L).build());
             add(Role.builder().id(2L).build());
             add(Role.builder().id(3L).build());
@@ -81,35 +78,30 @@ public class RoleServiceTest {
         Page<Role> pageRoles = new PageImpl<>(roles);
 
         when(roleRepository.findAll(pageable)).thenReturn(pageRoles);
-
         List<RoleDto> actual = roleService.findAll(pageable);
 
-         Assertions.assertEquals(expected, actual);
+        Assertions.assertEquals(expected, actual);
     }
 
     @Test
-    void add_ReturnsAddedRole() {
-
+    void addTest_shouldReturnAddedRole() {
         RoleDto expected = RoleDto.builder().id(4L).name("BROKE").build();
         Role roleWithoutId = Role.builder().name("BROKE").build();
         Role roleWithId = Role.builder().id(4L).name("BROKE").build();
 
         when(roleRepository.save(roleWithoutId)).thenReturn(roleWithId);
-
         RoleDto actual = roleService.save(RoleCreationDto.builder().name("BROKE").build());
 
         Assertions.assertEquals(expected, actual);
     }
 
     @Test
-    void update_UpdatesRole() {
-
+    void updateTest_shouldUpdateRole() {
         Long id = 4L;
         RoleCreationDto roleCreationDto = RoleCreationDto.builder().name("ENGINEER").build();
         Role role = Role.builder().id(id).name("ENGINEER").build();
 
         when(roleRepository.findById(id)).thenReturn(Optional.of(role));
-
         roleService.update(id, roleCreationDto);
 
         verify(roleRepository, times(1)).findById(id);
@@ -117,8 +109,7 @@ public class RoleServiceTest {
     }
 
     @Test
-    void delete_DeletesRole() {
-
+    void deleteTest_shouldDeleteRole() {
         Long id = 4L;
         roleService.delete(id);
 
