@@ -18,12 +18,7 @@ public class Lru {
 
     public Object getElementFromCache(Object key) {
         Node current = nodeList.stream().filter(cache -> cache.getKey().equals(key)).findFirst().orElse(null);
-        if(current != null){
-            nodeList.remove(current);
-            nodeList.addFirst(current);
-            return current.getValue();
-        }
-        return null;
+        return (current != null) ? current.getValue() : null;
     }
 
     public void putElementInCache(Object key, Object value) {
@@ -32,11 +27,11 @@ public class Lru {
             nodeList.remove(current);
         } else {
             if(nodeList.size() == capacity) {
-                nodeList.removeLast();
+                nodeList.removeFirst();
             }
         }
         Node newItem = new Node(key, value);
-        nodeList.addFirst(newItem);
+        nodeList.addLast(newItem);
     }
 
     @AllArgsConstructor
