@@ -4,7 +4,6 @@ import by.kladvirov.dto.RoleCreationDto;
 import by.kladvirov.dto.RoleDto;
 import by.kladvirov.service.RoleService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -21,11 +20,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.testcontainers.containers.PostgreSQLContainer;
-import org.testcontainers.containers.wait.strategy.LogMessageWaitStrategy;
 import org.testcontainers.junit.jupiter.Container;
 
-import java.time.Duration;
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,10 +36,10 @@ public class RoleControllerTest {
     private RoleService roleService;
 
     @Autowired
-    MockMvc mockMvc;
+    private MockMvc mockMvc;
 
     @Autowired
-    ObjectMapper mapper;
+    private ObjectMapper mapper;
 
     @Container
     private static final PostgreSQLContainer<?> container = new PostgreSQLContainer<>("postgres:15")
@@ -61,18 +57,7 @@ public class RoleControllerTest {
 
     @BeforeAll
     public static void setUp() {
-        container.setWaitStrategy(
-                new LogMessageWaitStrategy()
-                        .withRegEx(".*database system is ready to accept connections.*\\s")
-                        .withTimes(1)
-                        .withStartupTimeout(Duration.of(60, ChronoUnit.SECONDS))
-        );
         container.start();
-    }
-
-    @AfterAll
-    public static void close() {
-        container.close();
     }
 
     @Test
