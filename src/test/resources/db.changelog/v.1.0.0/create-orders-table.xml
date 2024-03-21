@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="13" author="wladponomar@gmail.com">
+        <createTable tableName="orders">
+            <column name="id" type="bigserial" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="user_id" type="int8">
+                <constraints nullable="false"/>
+            </column>
+            <column name="order_date" type="timestamp">
+                <constraints nullable="false"/>
+            </column>
+            <column name="status" type="varchar(16)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <changeSet id="14" author="wladponomar@gmail.com">
+        <sql>
+            ALTER TABLE orders
+                ADD CONSTRAINT user_id_fkey FOREIGN KEY (user_id) REFERENCES users (id);
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

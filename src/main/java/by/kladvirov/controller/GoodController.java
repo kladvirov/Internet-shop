@@ -4,10 +4,17 @@ import by.kladvirov.dto.GoodCreationDto;
 import by.kladvirov.dto.GoodDto;
 import by.kladvirov.dto.GoodUpdateDto;
 import by.kladvirov.service.GoodService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,7 +22,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -23,35 +29,87 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/goods")
+@Tag(name = "Good controller", description = "Good API")
 public class GoodController {
 
     private final GoodService goodService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<GoodDto> getById(@PathVariable("id") Long id) {
+    @PreAuthorize("hasAuthority('READ_GOODS')")
+    @Operation(summary = "Get good by id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "OK"),
+            @ApiResponse(responseCode = "404", description = "Good not found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    public ResponseEntity<GoodDto> getById(
+            @PathVariable("id")
+            @Parameter(description = "Good id", example = "11", required = true) Long id
+    ) {
         return new ResponseEntity<>(goodService.findById(id), HttpStatus.OK);
     }
 
     @GetMapping
-    public ResponseEntity<List<GoodDto>> getAllGoods(@RequestParam(value = "size", defaultValue = "10") int size,
-                                     @RequestParam(value = "page", defaultValue = "0") int page) {
-        return new ResponseEntity<>(goodService.findAll(size, page), HttpStatus.OK);
+    @PreAuthorize("hasAuthority('READ_GOODS')")
+    @Operation(summary = "Get all goods")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "OK"),
+            @ApiResponse(responseCode = "400", description = "Goods not found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    public ResponseEntity<List<GoodDto>> getAllGoods(Pageable pageable) {
+        return new ResponseEntity<>(goodService.findAll(pageable), HttpStatus.OK);
     }
 
 
     @PostMapping
-    public ResponseEntity<GoodDto> createGood(@RequestBody @Valid GoodCreationDto goodCreationDto) {
+    @PreAuthorize("hasAuthority('CREATE_GOODS')")
+    @Operation(summary = "Create new good")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Good has been created successfully"),
+            @ApiResponse(responseCode = "400", description = "Good hasn't been created. Check the data validity"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    public ResponseEntity<GoodDto> createGood(
+            @RequestBody
+            @Valid
+            @Parameter(description = "Info towards creating good", required = true) GoodCreationDto goodCreationDto
+    ) {
         return new ResponseEntity<>(goodService.save(goodCreationDto), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<HttpStatus> update(@PathVariable("id") Long id, @RequestBody @Valid GoodUpdateDto goodUpdateDto) {
+    @PreAuthorize("hasAuthority('UPDATE_GOODS')")
+    @Operation(summary = "Update good")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "OK"),
+            @ApiResponse(responseCode = "400", description = "Good hasn't been updated. Check the data validity"),
+            @ApiResponse(responseCode = "404", description = "Good not found"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    public ResponseEntity<HttpStatus> update(
+            @PathVariable("id")
+            @Parameter(description = "Good id", example = "1337", required = true) Long id,
+            @RequestBody
+            @Valid
+            @Parameter(description = "Info towards updating good", required = true) GoodUpdateDto goodUpdateDto
+    ) {
         goodService.update(id, goodUpdateDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<HttpStatus> deleteById(@PathVariable("id") Long id) {
+    @PreAuthorize("hasAuthority('DELETE_GOODS')")
+    @Operation(summary = "Delete good")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Good has been deleted successfully"),
+            @ApiResponse(responseCode = "400", description = "Good hasn't been deleted"),
+            @ApiResponse(responseCode = "500", description = "Internal server error")
+    })
+    public ResponseEntity<HttpStatus> deleteById(
+            @PathVariable("id")
+            @Parameter(description = "Good id", example = "11", required = true) Long id
+    ) {
         goodService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

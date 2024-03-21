@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="6" author="wladponomar@gmail.com">
+        <comment>Inserting test-data in goods table</comment>
+        <sql>
+            INSERT INTO goods (name, surname, price, create_date, expiration_date, is_available)
+            VALUES ('Apple', 'Golden', 1.20, '2024-03-01', '2024-04-01', true),
+                   ('Banana', 'Cavendish', 2.30, '2024-03-05', '2024-03-25', true),
+                   ('Orange', 'Navel', 1.50, '2024-03-10', '2024-04-10', false),
+                   ('Pear', 'Conference', 1.80, '2024-03-15', '2024-04-15', true),
+                   ('Mandarin', 'Clementine', 2.00, '2024-03-20', '2024-04-20', false);
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+
+    <changeSet id="7" author="wladponomar@gmail.com">
+        <comment>Inserting test-data in orders table</comment>
+        <sql>
+            INSERT INTO orders (user_id, order_date, status)
+            VALUES (1, '2024-03-12 23:42:41', 'processing'),
+                   (2, '2024-03-13 10:00:00', 'shipped'),
+                   (3, '2024-03-14 14:30:00', 'delivered'),
+                   (4, '2024-03-15 16:45:00', 'returned'),
+                   (5, '2024-03-16 20:00:00', 'processing')
+        </sql>
+    </changeSet>
+
+</databaseChangeLog>
