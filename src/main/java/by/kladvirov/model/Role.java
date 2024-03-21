@@ -16,10 +16,12 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.springframework.data.redis.core.RedisHash;
 
 import java.util.HashSet;
 import java.util.Set;
 
+@RedisHash("roles")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
