@@ -8,12 +8,12 @@ import java.util.List;
 
 public class Lru {
 
-    private Integer CACHE_CAPACITY;
+    private Integer capacity;
 
     private List<Node> nodeList = new LinkedList<>();
 
-    public Lru(Integer CACHE_CAPACITY){
-        this.CACHE_CAPACITY = CACHE_CAPACITY;
+    public Lru(Integer capacity){
+        this.capacity = capacity;
     }
 
     public Object getElementFromCache(Object key) {
@@ -31,7 +31,7 @@ public class Lru {
         if(current != null){
             nodeList.remove(current);
         } else {
-            if(nodeList.size() == CACHE_CAPACITY) {
+            if(nodeList.size() == capacity) {
                 nodeList.removeLast();
             }
         }
