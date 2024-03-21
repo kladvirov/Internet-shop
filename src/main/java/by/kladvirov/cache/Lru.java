@@ -1,43 +1,52 @@
 package by.kladvirov.cache;
 
-import java.util.ArrayList;
-import java.util.Deque;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+
 import java.util.LinkedList;
 import java.util.List;
 
 public class Lru {
 
-    private final Integer CACHE_CAPACITY = 4;
+    private Integer CACHE_CAPACITY;
 
-    private Deque<Integer> q = new LinkedList<>();
+    private List<Node> list = new LinkedList<>();
 
-    private List<Cache> list = new ArrayList<>();
+    public Lru(Integer CACHE_CAPACITY){
+        this.CACHE_CAPACITY = CACHE_CAPACITY;
+    }
 
-    public String getElementFromCache(Integer key) {
-        Cache current = list.stream().filter(cache -> cache.getKey().equals(key)).findFirst().orElse(null);
+    public Object getElementFromCache(Object key) {
+        Node current = list.stream().filter(cache -> cache.getKey().equals(key)).findFirst().orElse(null);
         if(current != null){
-            q.remove(current.getKey());
-            q.addFirst(current.getKey());
+            list.remove(current);
+            list.addFirst(current);
             return current.getValue();
         }
-        return "not exists";
+        return null;
     }
 
-    public void putElementInCache(Integer key, String value) {
-        Cache current = list.stream().filter(cache -> cache.getKey().equals(key)).findFirst().orElse(null);
+    public void putElementInCache(Object key, Object value) {
+        Node current = list.stream().filter(cache -> cache.getKey().equals(key)).findFirst().orElse(null);
         if(current != null){
-            q.remove(current.getKey());
+            list.remove(current);
         } else {
-            if(q.size() == CACHE_CAPACITY) {
-                Integer temp = q.removeLast();
-                Cache toRemove = list.stream().filter(cache -> cache.getKey().equals(temp)).findFirst().orElse(null);
-                list.remove(toRemove);
+            if(list.size() == CACHE_CAPACITY) {
+                list.removeLast();
             }
         }
-        Cache newItem = new Cache(key, value);
-        q.addFirst(newItem.getKey());
-        list.add(newItem);
+        Node newItem = new Node(key, value);
+        list.addFirst(newItem);
     }
 
+    @AllArgsConstructor
+    @Data
+    public static class Node {
+
+        private Object key;
+
+        private Object value;
+
+    }
 
 }
