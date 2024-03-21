@@ -1,6 +1,5 @@
 package by.kladvirov.service;
 
-import by.kladvirov.cache.annotation.CustomCacheable;
 import by.kladvirov.dto.RoleCreationDto;
 import by.kladvirov.dto.RoleDto;
 import by.kladvirov.exception.ServiceException;
@@ -8,6 +7,10 @@ import by.kladvirov.mapper.RoleMapper;
 import by.kladvirov.model.Role;
 import by.kladvirov.repository.RoleRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -17,13 +20,14 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Service
-@CustomCacheable
+@CacheConfig(cacheNames = "rolesCache")
 public class RoleService {
 
     private final RoleRepository roleRepository;
 
     private final RoleMapper roleMapper;
 
+    @Cacheable
     @Transactional(readOnly = true)
     public RoleDto findById(Long id) {
         Role role = roleRepository.findById(id).orElseThrow(() -> new ServiceException("There is no such role", HttpStatus.NOT_FOUND));
@@ -38,6 +42,8 @@ public class RoleService {
             throw new ServiceException("Error during finding all roles", HttpStatus.BAD_REQUEST);
         }
     }
+
+    @Cacheable
     @Transactional
     public RoleDto save(RoleCreationDto roleDto) {
         try {
@@ -48,6 +54,7 @@ public class RoleService {
         }
     }
 
+    @CachePut(key = "#id")
     @Transactional
     public void update(Long id, RoleCreationDto roleDto) {
         try {
@@ -60,6 +67,7 @@ public class RoleService {
         }
     }
 
+    @CacheEvict(key = "#id")
     @Transactional
     public void delete(Long id) {
         try {
