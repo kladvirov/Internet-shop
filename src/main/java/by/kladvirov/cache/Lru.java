@@ -17,12 +17,12 @@ public class Lru {
     }
 
     public Object getElementFromCache(Object key) {
-        Node current = nodeList.stream().filter(cache -> cache.getKey().equals(key)).findFirst().orElse(null);
+        Node current = getNode(key);
         return (current != null) ? current.getValue() : null;
     }
 
     public void putElementInCache(Object key, Object value) {
-        Node current = nodeList.stream().filter(cache -> cache.getKey().equals(key)).findFirst().orElse(null);
+        Node current = getNode(key);
         if(current != null){
             nodeList.remove(current);
         } else {
@@ -32,6 +32,21 @@ public class Lru {
         }
         Node newItem = new Node(key, value);
         nodeList.addLast(newItem);
+    }
+
+    private Node getNode(Object key) {
+        return nodeList.stream().filter(cache -> cache.getKey().equals(key)).findFirst().orElse(null);
+    }
+
+    public boolean containsKey(Object key) {
+        return nodeList.stream().anyMatch(node -> node.getKey().equals(key));
+    }
+
+    public void delete(Object key) {
+        Node current = getNode(key);
+        if (current != null) {
+            nodeList.remove(current);
+        }
     }
 
     @AllArgsConstructor
