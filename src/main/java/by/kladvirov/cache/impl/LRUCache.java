@@ -1,18 +1,19 @@
-package by.kladvirov.cache;
+package by.kladvirov.cache.impl;
 
+import by.kladvirov.cache.Cache;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.LinkedList;
 import java.util.List;
 
-public class Lru {
+public class LRUCache implements Cache {
 
     private Integer capacity;
 
     private List<Node> nodeList = new LinkedList<>();
 
-    public Lru(Integer capacity){
+    public LRUCache(Integer capacity){
         this.capacity = capacity;
     }
 
@@ -34,10 +35,6 @@ public class Lru {
         nodeList.addLast(newItem);
     }
 
-    private Node getNode(Object key) {
-        return nodeList.stream().filter(cache -> cache.getKey().equals(key)).findFirst().orElse(null);
-    }
-
     public boolean containsKey(Object key) {
         return nodeList.stream().anyMatch(node -> node.getKey().equals(key));
     }
@@ -47,6 +44,10 @@ public class Lru {
         if (current != null) {
             nodeList.remove(current);
         }
+    }
+
+    private Node getNode(Object key) {
+        return nodeList.stream().filter(cache -> cache.getKey().equals(key)).findFirst().orElse(null);
     }
 
     @AllArgsConstructor

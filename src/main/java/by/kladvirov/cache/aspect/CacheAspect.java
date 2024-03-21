@@ -1,7 +1,8 @@
 package by.kladvirov.cache.aspect;
 
-import by.kladvirov.cache.Lfu;
+import by.kladvirov.cache.Cache;
 import by.kladvirov.cache.annotation.CustomCacheable;
+import lombok.AllArgsConstructor;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -9,9 +10,10 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Aspect
+@AllArgsConstructor
 public class CacheAspect {
 
-    private final Lfu lfu = new Lfu(20);
+    private Cache cache;
 
     @Around("execution(* by.kladvirov.service.*.findById(..))")
     public Object cachingFindById(ProceedingJoinPoint joinPoint) throws Throwable {
@@ -19,11 +21,11 @@ public class CacheAspect {
 
         if(annotationPresent) {
             Long id = (Long) joinPoint.getArgs()[0];
-            if(lfu.containsKey(id)){
-                return lfu.getElementFromCache(id);
+            if(cache.containsKey(id)){
+                return cache.getElementFromCache(id);
             } else {
                 Object retVal = joinPoint.proceed();
-                lfu.putElementInCache(id, retVal);
+                cache.putElementInCache(id, retVal);
                 return retVal;
             }
         }
@@ -37,8 +39,8 @@ public class CacheAspect {
         if(annotationPresent) {
             Long id = (Long) joinPoint.getArgs()[0];
             Object retVal = joinPoint.proceed();
-            if(!lfu.containsKey(id)){
-                lfu.putElementInCache(id, retVal);
+            if(!cache.containsKey(id)){
+                cache.putElementInCache(id, retVal);
                 return retVal;
             }
         }
@@ -52,8 +54,8 @@ public class CacheAspect {
         if(annotationPresent) {
             Long id = (Long) joinPoint.getArgs()[0];
             Object retVal = joinPoint.proceed();
-            if(lfu.containsKey(id)){
-                lfu.putElementInCache(id, retVal);
+            if(cache.containsKey(id)){
+                cache.putElementInCache(id, retVal);
                 return retVal;
             }
         }
@@ -61,15 +63,16 @@ public class CacheAspect {
     }
 
     @Around("execution(* by.kladvirov.service.*.delete(..))")
-    public void cachingDelete(ProceedingJoinPoint joinPoint) {
+    public void cachingDelete(ProceedingJoinPoint joinPoint) throws Throwable {
         boolean annotationPresent = joinPoint.getTarget().getClass().isAnnotationPresent(CustomCacheable.class);
 
         if(annotationPresent) {
             Long id = (Long) joinPoint.getArgs()[0];
-            if(lfu.containsKey(id)) {
-                lfu.delete(id);
+            if(cache.containsKey(id)) {
+                cache.delete(id);
             }
         }
+        joinPoint.proceed();
     }
 
 }

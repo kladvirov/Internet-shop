@@ -16,6 +16,9 @@ spring:
     change-log: db/changelog/main-changelog.xml
 
 application:
+  cache:
+    algorithm: LFU
+    size: 64
   security:
     jwt:
      secret-key: 5+h/1Tnoc0ob2E9sItBPO54xSf3Cx3M4hUYQ3qod/CYl5cotIiS3KOTDdLcAhBTq

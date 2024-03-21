@@ -1,5 +1,6 @@
 package by.kladvirov.service;
 
+import by.kladvirov.cache.annotation.CustomCacheable;
 import by.kladvirov.dto.RoleCreationDto;
 import by.kladvirov.dto.RoleDto;
 import by.kladvirov.exception.ServiceException;
@@ -16,6 +17,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Service
+@CustomCacheable
 public class RoleService {
 
     private final RoleRepository roleRepository;

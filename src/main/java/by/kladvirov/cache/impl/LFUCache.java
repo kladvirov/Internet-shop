@@ -1,5 +1,6 @@
-package by.kladvirov.cache;
+package by.kladvirov.cache.impl;
 
+import by.kladvirov.cache.Cache;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -8,13 +9,13 @@ import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Lfu {
+public class LFUCache implements Cache {
 
     private Integer capacity;
 
     private List<Node> nodeList = new LinkedList<>();
 
-    public Lfu(Integer capacity) {
+    public LFUCache(Integer capacity) {
         this.capacity = capacity;
     }
 
